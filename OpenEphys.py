@@ -17,7 +17,7 @@ import struct
 from copy import deepcopy
 
 # constants
-NUM_HEADER_BYTES = 1024
+NUM_HEADER_BYTES =1024
 SAMPLES_PER_RECORD = 1024
 BYTES_PER_SAMPLE = 2
 RECORD_SIZE = 4 + 8 + SAMPLES_PER_RECORD * BYTES_PER_SAMPLE + 10 # size of each continuous record in bytes
@@ -68,7 +68,7 @@ def loadFolder(folderpath,**kwargs):
     return data
 
 def loadFolderToArray(folderpath, channels = 'all', chprefix = 'CH', 
-                      dtype = float, session = '0', source = '100'):
+                      dtype = float, session = '0', source = '101'):
     '''Load continuous files in specified folder to a single numpy array. By default all
     CH continous files are loaded in numerical order, ordering can be specified with
     optional channels argument which should be a list of channel numbers.'''
