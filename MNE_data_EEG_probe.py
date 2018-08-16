@@ -14,6 +14,8 @@ from mne.time_frequency import (tfr_multitaper, tfr_stockwell, tfr_morlet,
 datatp=data.transpose()#Array from openephys has to be trasnposed to match RawArray MNE function to create.
 #data comes from openephys.
 
+data_aux=data_aux.transpose()
+
 #set nme parameters
 n_channels =17
 
@@ -167,9 +169,9 @@ custom_raw = mne.io.RawArray(datatp, info)
 
 
 
-####Below tried to make montages but does not work
-#montage= mne.channels.read_dig_montage(elp=trode_map, point_names= point_names, unit='mm', transform=False)
-
+###Below tried to make montages but does not work
+montage= mne.channels.read_dig_montage(elp=trode_map, point_names= point_names, unit='mm', transform=True)
+#print(montage)
 
 #montage.plot(scale_factor=10, show_names=True, kind='topomap', show=True)
 #This below allows to mark bad channels once known.

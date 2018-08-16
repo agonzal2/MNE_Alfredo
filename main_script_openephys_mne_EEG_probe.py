@@ -56,8 +56,9 @@ stim=create_epochs(analysis_times, prm.get_sampling_rate())
 
 #Load Open Ephys Data
 data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')#######load file
-#
 
+
+data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')#######load file8
 
 
 

@@ -21,10 +21,10 @@ prm = parameters.Parameters()
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('C:\\Users\\agonzal2\\Desktop\\Tethered Recordings\\ERUK Animals\\180705\\2018-07-05_10-37-59\\')
+    prm.set_filepath('D:\\ERUK\\Tethered Recordings\\ERUK Animals\\180814\\2018-08-14_10-56-48\\')
     prm.set_filename('E17.txt')
-    prm.set_excelpath('C:\\Users\\agonzal2\\Desktop\\Tethered Recordings\\ERUK Animals\\180705\\')
-    prm.set_excelname('180705_VGATCRE_390.xls')
+    prm.set_excelpath('D:\\ERUK\\Tethered Recordings\\ERUK Animals\\180814\\')
+    prm.set_excelname('180814_Stimulations.xls')
     prm.set_sampling_rate(1000)
     prm.set_starttime(1036) #using as experiment
     prm.set_endtime(1046)   
@@ -36,18 +36,17 @@ def init_params(): #Defines initial parameters used throughout.
     
         
 
-def main (): #runs stuff.
+def main (): #runs the entire program, synchronize functions from different scripts.
     
-    init_params()
+    init_params() # not in use yet
     
-    
+# run the initiate parameters
 init_params()
-print(prm.get_filepath())
 
+
+#Get the analysis times from spreadsheet.
 analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname())
 
-#events=np.array([[1,2,3], [4,5,6]])
-#print(analysis_times)
 
 #Creates epoch file.
 stim=create_epochs(analysis_times, prm.get_sampling_rate())
@@ -63,22 +62,11 @@ data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC
 
 #Add Opto Stim Channel to Data
 data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-data[:,16]=(data_adc[:,1]*1000)
+data[:,48]=(data_adc[:,0]*1000)
+
+# After this go to create_MNE_Data.
 
 
-##Stuff to get precise stimulation times.
-#stimulations=130 
-#test1= data_adc[:,1]*1000
-#stim_times=[]
-#for range in stimulations:
-#    test2=np.where(test1 > -200)
-#    test3=np.array(test2)
-#    test4=np.where(test3[0] > (test3[0][0]+15000))
-#test5=np.array(test4)
-#test3=np.where(test2[])
-#np.where(test2[0][1])
 
-
-#plt.plot(data_adc[:,1]*1000)
 
 
