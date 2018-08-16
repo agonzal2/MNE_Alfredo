@@ -44,13 +44,14 @@ def main (): #runs stuff.
 init_params()
 print(prm.get_filepath())
 
-analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname())
 
-#events=np.array([[1,2,3], [4,5,6]])
-##print(analysis_times)
+##If you have specific times to analyse, load excel spreadsheet of them below.
+#analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname())
 
-##Creates epoch file.
-stim=create_epochs(analysis_times, prm.get_sampling_rate())
+
+
+##Creates epoch file. Creates epochs from analysis times.
+#stim=create_epochs(analysis_times, prm.get_sampling_rate())
 
 
 
@@ -63,7 +64,7 @@ data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX
 
 
 
-##Stuff to get precise stimulation times.
+##Stuff to get precise stimulation times. Ignore this for now.
 #stimulations=130 
 #test1= data_adc[:,1]*1000
 #stim_times=[]
