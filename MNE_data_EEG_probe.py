@@ -32,7 +32,7 @@ channel_types=['eeg','eeg','eeg','eeg','eeg','eeg', 'eeg', 'eeg',
                ,'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg']
 
 
-### Montage of electrodes.
+### Montage of electrodes. Still not working so ignore for now. Doesn't do anything to plotting.
 trode_map = np.zeros(shape=(35,3))  ### Use Hsp with trode_map in
                                     ### mne.channels.read_dig_montage
                                     #### https://www.martinos.org/mne/stable/generated/mne.channels.read_dig_montage.html#mne.channels.read_dig_montage
@@ -162,15 +162,19 @@ point_names= ('CHPI001','CHPI002','CHPI003','CHPI004','CHPI005','CHPI006',
 
 
 
-
+#This creates the info that goes with the channels, which is names, sampling rate, and channel types.
 info = mne.create_info(channel_names, prm.get_sampling_rate(), channel_types)
+
+
+#This makes the object that contains all the data and info about the channels.
+#Computations like plotting, averaging, power spectrums can be performed on this object.
 
 custom_raw = mne.io.RawArray(datatp, info)
 
 
 
 ###Below tried to make montages but does not work
-montage= mne.channels.read_dig_montage(elp=trode_map, point_names= point_names, unit='mm', transform=True)
+#montage= mne.channels.read_dig_montage(elp=trode_map, point_names= point_names, unit='mm', transform=True)
 #print(montage)
 
 #montage.plot(scale_factor=10, show_names=True, kind='topomap', show=True)
@@ -179,8 +183,8 @@ montage= mne.channels.read_dig_montage(elp=trode_map, point_names= point_names, 
 
 
 #This below adds the epochs to the object.
-epochs=mne.Epochs(custom_raw, stim, event_id=[0], baseline= None, 
-           detrend=None, tmin=-1, tmax=1)
+#epochs=mne.Epochs(custom_raw, stim, event_id=[0], baseline= None, 
+          # detrend=None, tmin=-1, tmax=1)
 
 
 
@@ -194,10 +198,12 @@ colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
      emg='g', ref_meg='steelblue', misc='k', stim='b',
      resp='k', chpi='k')
 
-evoked= epochs.average().pick_types(eeg=True)
-evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
+#evoked= epochs.average().pick_types(eeg=True)
+#evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
 
-#custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", show_options = "true" )#
+
+###This will plot your data. If you want channels in a particular order put the list below of order into the parameters.
+custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", show_options = "true" )#
 
 
 ##Can put this into raw_plot order=[4, 5, 3, 0, 1, 14, 15, 16]
