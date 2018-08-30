@@ -30,6 +30,31 @@ def create_epochs(analysis_times, sampling_rate): #Makes epoch file for MNE of s
         
     return epochs
 
+def actual_stim_times(data, sampling_rate):
+    
+    times=[]
+    times=data[:,48]>100
+
+    start_times=[]
+    
+    for n in range(len(times)): 
+        if times[n] == True:
+            start_times.append(n)
+    
+    stim_times=[]    
+    
+    for n in range(len(start_times)):
+        x=n-1
+        if n ==0:
+            stim_times.append(start_times[n])
+        elif start_times[n]-start_times[n-1]>(sampling_rate*20):
+            stim_times.append(start_times[n])
+    
+    
+    stimulations= asarray(stim_times)
+    
+    return stimulations
+
     
 def import_spreadsheet(excelfile): #Import analysis times for optogenetic on and control times from excel.
     #Make sure values are not empty.

@@ -17,20 +17,20 @@ from mne.time_frequency import (tfr_multitaper, tfr_stockwell, tfr_morlet,
 #This takes the date generated from main_script_openephys_mne.py and transposes it.
 
 
-datatp=data.transpose()#Array from openephys has to be trasnposed to match RawArray MNE function to create.
-
+#datatp=data.transpose()#Array from openephys has to be trasnposed to match RawArray MNE function to create.
+#del data
 
 #Below I make the channel names and channel types, this should go in the parameteres file later.
 
 channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
                'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
                'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
-               'hpc_mid_deep_2', 'hpc_mid_sup_2', 'hpc_ros_deep_2', 'hpc_ros_sup_2', 'pfc_deep_2', 
-               'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_contra_deep_2', 'hpc_contra_sup_2', 
-               'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caudal_deep_2', 'hpc_caudal_sup_2',
-               'hpc_mid_deep_3', 'hpc_mid_sup_3', 'hpc_ros_deep_3', 'hpc_ros_sup_3', 'pfc_deep_3', 
-               'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_contra_deep_3', 'hpc_contra_sup_3', 
-               'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_caudal_deep_3', 'hpc_caudal_sup_3',
+               'hpc_mid_d_2', 'hpc_mid_s_2', 'hpc_ros_d_2', 'hpc_ros_s_2', 'pfc_d_2', 
+               'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
+               'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
+               'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
+               'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_c_d_3', 'hpc_c_s_3', 
+               'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
                'Opto']
 channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
                'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
@@ -41,19 +41,26 @@ channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg'
 #This creates the info object that includes names, sampling rate, channel types and in the future location.
 info = mne.create_info(channel_names, prm.get_sampling_rate(), channel_types)
 
+#This below allows to mark bad channels once known. Uncomment if needed.
+custom_raw.info['bads']=['hpc_contra_deep', 'hpc_contra_sup', 'hpc_caudal_sup','hpc_ros_d_2','cx1_2', 'cx2_2'
+               'hpc_c_d_3', 'hpc_c_s_3','EMG1_2', 'EMG2_2', 'EMG2_3']
 
 #This creates the data array with the info, so the object for the MNE to work and then we can 
 #perform functions made for these EEG objects.
 
 custom_raw = mne.io.RawArray(datatp, info)
 
-#This below allows to mark bad channels once known. Uncomment if needed.
-#custom_raw.info['bads']=['nothing1', 'nothing2', 'hpc_ros_deep','EMG1']
+
+#This is to filter.
+#filt=custom_raw.filter(1, 100, fir_design='firwin')
 
 
-###This below adds the epochs to the object.Uncomment if needed.
-#epochs=mne.Epochs(custom_raw, stim, event_id=[41,42,43,44,45,46,47,48,49,50], baseline= None, 
-#           detrend=None, tmin=-10, tmax=10)
+
+
+
+#This below adds the epochs to the object.Uncomment if needed.
+epochs=mne.Epochs(custom_raw, stim, baseline= None, 
+           detrend=None, tmin=-5, tmax=2)
 
 
 ##To do a basic plot is below
@@ -65,8 +72,15 @@ colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
 
 
 #This command below makes the plot, change the order to see more channels.
-custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", show_options = "true", order= [1, 48, 5])#
+#custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", show_options = "true")#
 
+#order= [1, 48, 5]
+
+#evoked= epochs.average().pick_types(eeg=True, emg=True)#to average epochs.
+#evoked.plot([15], time_unit='s') #to plot these epochs, first array is channel number.
+
+##This below plots epochs individually so can go through them. 
+epochs.plot(n_epochs=1, block=True, scalings= 'auto') #block episodes. 
 
 
 ###To do psd plots of epochs

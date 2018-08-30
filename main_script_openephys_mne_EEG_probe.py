@@ -60,6 +60,18 @@ data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dt
 
 data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')#######load file8
 
+data = np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+data[:,32]=data_aux[:,0]
+
+
+
+'load text to numpy array'
+
+
+data = np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+#data[:,33]=data_sleep[:,0]
+
+
 
 
 
