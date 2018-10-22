@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Created on Wed Nov 22 14:29:46 2017
 
@@ -39,6 +39,13 @@ class Parameters:
 
     def set_excelname(self, exn):
         Parameters.excelname = exn
+        
+    def get_channel_combo_name(self):
+        return self.combo
+
+    def set_channel_combo_name(self, comb):
+        Parameters.combo = comb    
+    
         
     def get_starttime(self):
         
@@ -113,6 +120,19 @@ class Parameters:
     def set_stimfreq(self, sf):
         
         Parameters.stimfreq = sf
+        
+        
+    def set_channel_1(self, chn1):
+        Parameters.channel1 = chn1
+        
+    def get_channel_1(self):
+        return Parameters.channel1
+    
+    def set_channel_2(self, chn2):
+        Parameters.channel2 = chn2
+        
+    def get_channel_2(self):
+        return Parameters.channel2
     
 
         

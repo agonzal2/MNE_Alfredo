@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Created on Sun Aug  3 15:18:38 2014
 @author: Dan Denman and Josh Siegle
@@ -68,7 +68,7 @@ def loadFolder(folderpath,**kwargs):
     return data
 
 def loadFolderToArray(folderpath, channels = 'all', chprefix = 'CH', 
-                      dtype = float, session = '0', source = '101'):
+                      dtype = float, session = '0', source = '100'):
     '''Load continuous files in specified folder to a single numpy array. By default all
     CH continous files are loaded in numerical order, ordering can be specified with
     optional channels argument which should be a list of channel numbers.'''
