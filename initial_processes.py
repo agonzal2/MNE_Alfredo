@@ -20,6 +20,140 @@ def load_file(file):  #Opens text files.
     print(len(data))
     return data
 
+
+'The function below loads 16 channel headstage recordings, specify how many there are'
+
+def load_16_channel_opto(headstage_number):
+    
+     
+    'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+
+    if headstage_number == 4:
+    
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        
+        datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
+        del data
+        del data_adc
+        
+        'Below I make the channel names and channel types, this should go in the parameteres file later.'
+        
+        n_channels=65
+        
+        channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
+                       'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
+                       'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
+                       'hpc_mid_d_2', 'hpc_mid_s_2', 'hpc_ros_d_2', 'hpc_ros_s_2', 'pfc_d_2', 
+                       'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
+                       'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
+                       'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
+                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_c_d_3', 'hpc_c_s_3', 
+                       'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
+                       'hpc_mid_d_4', 'hpc_mid_s_4', 'hpc_ros_d_4', 'hpc_ros_s_4', 'pfc_d_4', 
+                       'pfc_s_4', 'cx1_4', 'cx2_4', 'hpc_c_d_4', 'hpc_c_s_4', 
+                       'EMG1_4', 'EMG2_4', 'cb_deep_4', 'cb_sup_4', 'hp_c_d_4', 'hpc_c_s_4',
+                       
+                       'Opto']
+        channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'stim']
+    
+    
+    
+    if headstage_number == 3:
+        
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,48]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        
+        datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
+        del data
+        del data_adc
+        
+        'Below I make the channel names and channel types, this should go in the parameteres file later.'
+        
+        n_channels=49
+        
+        channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
+                       'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
+                       'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
+                       'hpc_mid_d_2', 'hpc_mid_s_2', 'hpc_ros_d_2', 'hpc_ros_s_2', 'pfc_d_2', 
+                       'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
+                       'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
+                       'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
+                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_c_d_3', 'hpc_c_s_3', 
+                       'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
+                       'Opto']
+        channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'stim']
+        
+    if headstage_number ==2:
+        
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,32]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        
+        datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
+        del data
+        del data_adc
+        
+        n_channels=33
+
+        channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
+                       'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
+                       'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
+                       'hpc_mid_d_2', 'hpc_mid_s_2', 'hpc_ros_d_2', 'hpc_ros_s_2', 'pfc_d_2', 
+                       'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
+                       'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
+                       'Opto']
+        channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'stim']
+        
+    if headstage_number ==1:
+        
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,16]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        
+        datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
+        del data
+        del data_adc
+        
+        n_channels=17
+
+        channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
+                       'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
+                       'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
+                       'Opto']
+        channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+                       'stim']
+        
+    
+    'This creates the info that goes with the channels, which is names, sampling rate, and channel types.'
+    info = mne.create_info(channel_names, prm.get_sampling_rate(), channel_types)
+    
+    
+    'This makes the object that contains all the data and info about the channels.'
+    'Computations like plotting, averaging, power spectrums can be performed on this object'
+    
+    custom_raw = mne.io.RawArray( datatp, info)
+    del datatp
+    return custom_raw
+    
+
 'The function below loads individual 32 channel probe recordings'
 def load_32_EEG():
    
