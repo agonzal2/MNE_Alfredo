@@ -80,10 +80,10 @@ def psd_entrainment_data (sub_data1, sub_data2, windowtype, samplingrate, stimfr
 
     window=scipy.signal.get_window(windowtype, samplingrate)
     f, Pxx_den = signal.periodogram(sub_data1, samplingrate, window, samplingrate)
-    stimpower= Pxx_den[int(stimfreq)]
+    stimpower= Pxx_den[int(stimfreq)]+Pxx_den[int(stimfreq-1)]+Pxx_den[int(stimfreq+1)]
 #    stimpower= Pxx_den[9]+Pxx_den[10]+Pxx_den[11]
 #    cumulativepower=Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[12]
-    cumulativepower=Pxx_den[0]+Pxx_den[1]+Pxx_den[2]+Pxx_den[3]+Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]+Pxx_den[12]+Pxx_den[13]+Pxx_den[14]+Pxx_den[15]+Pxx_den[16]+Pxx_den[17]+Pxx_den[18]+Pxx_den[19]+Pxx_den[20]+Pxx_den[21]+Pxx_den[22]
+    cumulativepower=Pxx_den[2]+Pxx_den[3]+Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]+Pxx_den[12]
     entrainmentratio=stimpower/cumulativepower
     
 
@@ -99,8 +99,8 @@ def psd_theta_delta(sub_data1, sub_data2, windowtype, samplingrate, stimfreq) : 
 
     window=scipy.signal.get_window(windowtype, samplingrate)
     f, Pxx_den = signal.periodogram(sub_data1, samplingrate, window, samplingrate)
-    thetapower= Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]+Pxx_den[12]
-    deltapower=Pxx_den[0]+Pxx_den[1]+Pxx_den[2]+Pxx_den[3]+Pxx_den[4]
+    thetapower= Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]+Pxx_den[12]
+    deltapower=Pxx_den[0]+Pxx_den[1]+Pxx_den[2]+Pxx_den[3]
     thetaoverdelta=thetapower/deltapower
     
 

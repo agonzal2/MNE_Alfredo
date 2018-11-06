@@ -21,9 +21,109 @@ def load_file(file):  #Opens text files.
     return data
 
 
-'The function below loads 16 channel headstage recordings, specify how many there are'
+"The function below loads 16 channel headstage recordings individually, specify which one of a potential 4 to load"
 
-def load_16_channel_opto(headstage_number):
+def load_16channel_opto_individually(headstage_number):
+    
+    
+    if headstage_number == 1:
+        channels=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
+        
+        'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        
+        'Add Opto Stim Channel to Data'
+        
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,16]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+    
+    if headstage_number == 2:
+        channels=[17,18,19,20,21,22, 23,24,25,26,27,28,29,30,31,32]
+        
+        'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        
+        'Add Opto Stim Channel to Data'
+        
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,16]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+    
+    if headstage_number == 3:
+        channels=[33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48]
+        
+        'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        
+        'Add Opto Stim Channel to Data'
+        
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,16]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+    
+    if headstage_number == 4:
+        channels=[49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64]
+        
+        'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        
+        'Add Opto Stim Channel to Data'
+        
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,16]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+    
+
+    return data
+
+def load_16channel_opto(headstage_number):
+
+    'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+
+    if headstage_number == 4:
+    
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        
+        
+    
+    
+    if headstage_number == 3:
+        
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,48]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        
+ 
+    if headstage_number ==2:
+        
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,32]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+
+        n_channels=33
+
+        
+    if headstage_number ==1:
+        
+        'Add Opto Stim Channel to Data'
+    
+        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+        data[:,16]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+
+    return data
+    
+    
+"The function below loads the data in mne format, specify number of headstages"
+    
+def load_16_channel_opto_mne(headstage_number):
     
      
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
@@ -158,12 +258,12 @@ def load_16_channel_opto(headstage_number):
 def load_32_EEG():
    
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')
-    data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '100')
+    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')
+    data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')
     
     'Below we append a line to the data array and add the accelrometer data. We transpose to fit the MNE data format.'
     data = np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-    data[:,32]=data_aux[:,0]
+    data[:,32]=data_aux[:,0]*800
     
     datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
     del data
@@ -345,8 +445,10 @@ def create_brain_state_epochs(analysis_times, sampling_rate): #Makes epoch file 
     epochs= tile(0, (num_rows, 3))
     for n in range(0, num_rows):
         start_time=(analysis_times.item(n,1))
+        ident=(analysis_times.item(n,0))
         epochs[n][0]=start_time
-        epochs[n][2]=n
+        epochs[n][2]=ident
+        epochs[n][1]=n
         
         
     return epochs
@@ -375,6 +477,10 @@ def actual_stim_times(data, sampling_rate):##for use with normal opto
     stimulations= asarray(stim_times)
     
     return stimulations
+
+
+
+
 
 def import_brain_state(excelfile): #Import analysis times for optogenetic on and control times from excel.
     #Make sure values are not empty.
