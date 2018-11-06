@@ -12,53 +12,57 @@ prm = parameters.Parameters()
 from OpenEphys import *
 import mne
 import xlrd
+import pandas as pd
 
 
 
-def 16_channel_entrainment_delta_theta(data, analysis_times, channel_names, animal_list):
-    if len(animal_list) == 4:
-        
+'This function calculates theta_delta ratio and entrainment for all channels in a 16 channel headstage'
+'It outputs as excel spreadsheet in file, have to specify animal name as string'
+
+def sixteenchan_thetadelta_entrainment(data, analysis_times, animal):
     
-        
+    #Below I define channel names that will be the list that use to run through data and as excel column headers
+    
+    channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
+                       'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
+                       'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup']
+   
+    #Get number of analyis_times
+    num_rows, num_cols=analysis_times.shape
+    #Use number of times to make zero arrays for thetadelta with lengh of channels"
+    thetadeltaarray= zeros(shape=(16, num_rows))
+    entrainmentarray=zeros(shape=(16, num_rows))
+    
+    #Run through all the channels, calculate theta_delta ratio and append to results
+    for n in range(len(channel_names)):
+        thetadeltaresults=multiple_theta_delta(analysis_times, data[:,n])
+        thetadeltaarray[n]=thetadeltaresults
+    
+    #Transpose to run with pandas
+    thetadeltaarray_tp=thetadeltaarray.transpose()
+    
+    #Make a pandas dataframe with the transponsed results array
+    df1=pd.DataFrame(thetadeltaarray_tp)
+    
+    
+    #Open an instance of of excel writer and use to define path and filename where it is to be saved.
+    writer=pd.ExcelWriter(str(prm.get_excelpath()) + str(prm.get_excelname())+'_'+animal+'.xlsx')
+    
+    #Write array to sheet.
+    df1.to_excel(writer,sheet_name="theta_delta", header=channel_names)   
+
+    #Run through all the channels, calculate theta_delta ratio and append to results
+    for n in range(len(channel_names)):
+        entrainmentresults=multiple_entrainmentratio(analysis_times, data[:,n])
+        entrainmentarray[n]=entrainmentresults 
+     #Transpose to run with pandas
+    entrainmentarray_tp=entrainmentarray.transpose()
+    #Make a pandas dataframe with the transponsed results array
+    df2=pd.DataFrame(entrainmentarray_tp)
+    #Write array to sheet.
+    df2.to_excel(writer, sheet_name="entrainment", header=channel_names)   
+
     return
-
-       
-    
-    
-    
-    
-    
-    
-#    
-#    if headstage_number == 3:
-#        
-#        'Add Opto Stim Channel to Data'
-#    
-#        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-#        data[:,48]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
-#        
-# 
-#    if headstage_number ==2:
-#        
-#        'Add Opto Stim Channel to Data'
-#    
-#        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-#        data[:,32]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
-#
-#        n_channels=33
-#
-#        
-#    if headstage_number ==1:
-#        
-#        'Add Opto Stim Channel to Data'
-#    
-#        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-#        data[:,16]=(data_adc[:,0]*300) 
-#    
-    
-    multiple_theta_delta(analysis_times, data[:, n])
-    
-    
     
     
     

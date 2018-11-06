@@ -60,7 +60,7 @@ init_params()
 
 'If you have specific times to analyse, load excel spreadsheet of them below.'
 
-analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
+#analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
 #stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
 'This is if brain state epoch array is available'
@@ -83,8 +83,9 @@ analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Im
 'This outputs multiple PSD plots for one channel'
 #multiple_psds(analysis_times, data[:, 30])
 
-
-
+'This function calculates theta_delta ratio and entrainment for all channels in a 16 channel headstage'
+'It outputs as excel spreadsheet in file, have to specify animal name as string'
+sixteenchan_thetadelta_entrainment(data, analysis_times, "VGAT_478")
 
 
 'This below adds the epochs to the object.'

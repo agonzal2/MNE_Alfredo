@@ -305,18 +305,20 @@ def multiple_entrainmentratio(analysis_times, data): #Plots PSDs at multiple tim
 
         entrainmentratio = psd_entrainment_data(sub_data1, sub_data2, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
         entrainmentresults[n]=entrainmentratio
-        print(entrainmentratio)
+        
        
     
      
-    return
+    return entrainmentresults
+
+       
     
 def multiple_theta_delta(analysis_times, data): #Plots PSDs at multiple times when fed in an excel spreadsheet.
        
     
     num_rows, num_cols=analysis_times.shape
     
-    entrainmentresults= zeros([num_rows])
+    thetadeltaresults= zeros([num_rows])
   
     for n in range(0, num_rows):
         start_time=(analysis_times.item(n,0))
@@ -334,10 +336,10 @@ def multiple_theta_delta(analysis_times, data): #Plots PSDs at multiple times wh
         
         time_axis, sub_data2=sub_time_data(data, prm.get_starttime2(), prm.get_endtime2(), prm.get_sampling_rate())
 
-        entrainmentratio = psd_theta_delta(sub_data1, sub_data2, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
-        entrainmentresults[n]=entrainmentratio
-        print(entrainmentratio)
+        thetadeltaratio = psd_theta_delta(sub_data1, sub_data2, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
+        thetadeltaresults[n]=thetadeltaratio
+        
        
     
      
-    return
+    return thetadeltaresults
