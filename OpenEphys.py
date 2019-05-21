@@ -89,12 +89,16 @@ def loadFolderToArray(folderpath, channels = 'all', chprefix = 'CH',
     n_samples  = len(channel_1_data)
     n_channels = len(filelist)
 
+    #progress = 100/n_channels
+    #w.LoadingDataProgress(int(progress))
+
     data_array = np.zeros([n_samples, n_channels], dtype)
     data_array[:,0] = channel_1_data
 
     for i, f in enumerate(filelist[1:]):
             data_array[:, i + 1] = loadContinuous(os.path.join(folderpath, f), dtype)['data']
             numFiles += 1
+            #w.LoadingDataProgress(int(numFiles*progress))
 
     print(''.join(('Avg. Load Time: ', str((time.time() - t0)/numFiles),' sec')))
     print(''.join(('Total Load Time: ', str((time.time() - t0)),' sec')))

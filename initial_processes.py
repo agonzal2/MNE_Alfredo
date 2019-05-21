@@ -13,6 +13,7 @@ from OpenEphys import *
 import mne
 import xlrd
 
+
 def load_file(file):  #Opens text files.
     print(" Opening file " + file)
     
@@ -255,11 +256,14 @@ def load_16_channel_opto_mne(headstage_number):
     
 
 'The function below loads individual 32 channel probe recordings'
-def load_32_EEG():
+def load_32_EEG(foldername):
    
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')
-    data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')
+    data=loadFolderToArray(foldername, channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')
+    data_aux=loadFolderToArray(foldername, channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')
+    
+    #data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')
+    #data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')
     
     'Below we append a line to the data array and add the accelrometer data. We transpose to fit the MNE data format.'
     data = np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
@@ -538,18 +542,22 @@ def import_spreadsheet(excelfile): #Import analysis times for optogenetic on and
         cell1=sheet.cell(n+1, 3)
         cell1_value=cell1.value
         analysis_times[n, 0]=cell1_value
-        cell2=sheet.cell(n+1, 4)
-        cell2_value=cell2.value
-        analysis_times[n, 1]=cell2_value
-        cell5=sheet.cell(n+1, 5)
-        cell5_value=cell5.value
-        analysis_times[n, 2]=cell5_value
-        cell6=sheet.cell(n+1, 6)
-        cell6_value=cell6.value
-        analysis_times[n, 3]=cell6_value
-        cell7=sheet.cell(n+1, 7)
-        cell7_value=cell7.value
-        analysis_times[n, 4]=cell7_value
+        
+        # Every cell is empty in the next columns in 300abs_thresh.xls!!
+        # =============================================================================
+        #         cell2=sheet.cell(n+1, 4)
+        #         cell2_value=cell2.value
+        #         analysis_times[n, 1]=cell2_value
+        #         cell5=sheet.cell(n+1, 5)
+        #         cell5_value=cell5.value
+        #         analysis_times[n, 2]=cell5_value
+        #         cell6=sheet.cell(n+1, 6)
+        #         cell6_value=cell6.value
+        #         analysis_times[n, 3]=cell6_value
+        #         cell7=sheet.cell(n+1, 7)
+        #         cell7_value=cell7.value
+        #         analysis_times[n, 4]=cell7_value
+        # =============================================================================
         
     return analysis_times
 
