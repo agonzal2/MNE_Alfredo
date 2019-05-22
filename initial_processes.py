@@ -7,6 +7,7 @@ email: agonzal2@staffmail.ed.ac.uk
 """
 from numpy import *
 import parameters
+import os
 import matplotlib.pyplot as plt
 prm = parameters.Parameters()
 from OpenEphys import *
@@ -77,6 +78,23 @@ def load_16channel_opto_individually(headstage_number):
 
     return data
 
+
+def load_32channel_individually():
+    
+#    channels=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22, 23,24,25,26,27,28,29,30,31,32]
+    
+    
+    'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
+    data=loadFolderToArray(prm.get_filepath(), channels='all', chprefix = 'CH', dtype = float, session = '0', source = '101')#######load file
+    data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')#######load file8
+    
+    'Add Opto Stim Channel to Data'
+    
+    data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+    data[:,32]=(data_aux[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.    
+
+    return data
+
 def load_16channel_opto(headstage_number):
 
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
@@ -127,19 +145,19 @@ def load_16_channel_opto_mne(headstage_number):
     
      
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
-    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')#######load file
+#    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '101')#######load file8
 
     if headstage_number == 4:
     
         'Add Opto Stim Channel to Data'
     
         data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+#        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
         
         datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
         del data
-        del data_adc
+#        del data_adc
         
         'Below I make the channel names and channel types, this should go in the parameteres file later.'
         
@@ -152,10 +170,10 @@ def load_16_channel_opto_mne(headstage_number):
                        'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
                        'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
                        'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
-                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_c_d_3', 'hpc_c_s_3', 
+                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_ct_d_3', 'hpc_ct_s_3', 
                        'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
                        'hpc_mid_d_4', 'hpc_mid_s_4', 'hpc_ros_d_4', 'hpc_ros_s_4', 'pfc_d_4', 
-                       'pfc_s_4', 'cx1_4', 'cx2_4', 'hpc_c_d_4', 'hpc_c_s_4', 
+                       'pfc_s_4', 'cx1_4', 'cx2_4', 'hpc_ct_d_4', 'hpc_ct_s_4', 
                        'EMG1_4', 'EMG2_4', 'cb_deep_4', 'cb_sup_4', 'hp_c_d_4', 'hpc_c_s_4',
                        
                        'Opto']
@@ -189,7 +207,7 @@ def load_16_channel_opto_mne(headstage_number):
                        'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
                        'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
                        'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
-                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_c_d_3', 'hpc_c_s_3', 
+                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_ct_d_3', 'hpc_ct_s_3', 
                        'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
                        'Opto']
         channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
@@ -255,7 +273,7 @@ def load_16_channel_opto_mne(headstage_number):
     
 
 'The function below loads individual 32 channel probe recordings'
-def load_32_EEG():
+def load_32_EEG(source):
    
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
     data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')
@@ -263,7 +281,7 @@ def load_32_EEG():
     
     'Below we append a line to the data array and add the accelrometer data. We transpose to fit the MNE data format.'
     data = np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-    data[:,32]=data_aux[:,0]*800
+    data[:,32]=data_aux[:,0]*3200
     
     datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
     del data
@@ -457,7 +475,7 @@ def create_brain_state_epochs(analysis_times, sampling_rate): #Makes epoch file 
 def actual_stim_times(data, sampling_rate):##for use with normal opto
     
     times=[]
-    times=data[:,64]>300
+    times=data[:,16] > 300
     start_times=[]
     
     for n in range(len(times)): 
@@ -578,6 +596,29 @@ def plot_all(data, sampling_rate, color):  #This allows for an initial plot of a
     
     return
 
+def load_text_taini_files():
+    
+    chprefix='ch'
+    files = [f for f in os.listdir(prm.get_filepath()) if ".txt" in f]
+    
+    files = [f for f in files if len(f.split('_')) == 4]
+    chs = sorted([int(f.split('_'+chprefix)[1].split('.')[0]) for f in files])
+    
+    
+    data_dict = {}
+    
+    data_dict[0] = np.loadtxt(prm.get_filepath() + str(files[0]))
+    length=len(data_dict[0])
+    data= zeros(shape=(len(chs), length))
+    print("Got data array")
+    
+    for f in range(0, len(chs)):
+        data[f]=np.loadtxt(prm.get_filepath() + str(files[f]))
+        print("Loaded" + str(files[f]))
+    
+    
 
+    return data
+    
     
 

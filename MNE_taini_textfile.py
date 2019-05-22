@@ -1,137 +1,136 @@
-
+ # -*- coding: utf-8 -*-
 """
 Created on Tue Jun 26 16:54:00 2018
 
 @author: Alfredo Gonzalez-Sulser, University of Edinburgh
 email: agonzal2@staffmail.ed.ac.uk
-
-This makes the objects for MNE.
 """
-
 import glob
 import os
-
-import mne
 from OpenEphys import *
+import mne
 from initial_processes import *
-from numpy import transpose
+from numpy import *
 from matplotlib import pyplot as plt
 from mne.time_frequency import (tfr_multitaper, tfr_stockwell, tfr_morlet,
                                 tfr_array_morlet)
+from seizure_finder import *
 
 from power_spectrum import *
-from Multi_channel_analysis import *
 import parameters
 prm = parameters.Parameters()
-import xlsxwriter
 
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('F:\\190129\\2019-01-29_14-28-56\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
+    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\TAINI_5min_1024\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
     prm.set_filename('E17.txt')
-    prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')
-    prm.set_excelname('180814_VGATCRE_475_481_390_3Hz.xls')#
-    prm.set_sampling_rate(1000)
+    prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\')
+    prm.set_excelname('S7001_D2_Seizures_n.xls') 
+    prm.set_channel_combo_name('Short_connections.xls') 
+    prm.set_sampling_rate(20000)
     prm.set_starttime(1036) #using as experiment
     prm.set_endtime(1046)   
     prm.set_starttime2(994) #using as control.
     prm.set_endtime2(1004)
-    prm.set_windowtype('hann')
+    prm.set_windowtype('hamming')
     prm.set_stimfreq(10)
+    prm.set_channel_1(0)
+    prm.set_channel_2(1)
+
 
 'Initialize the parameters'
 init_params()
 
-'Function below loads each 16-channel-headstage individually.'
-#data=load_16channel_opto_individually(3)
+'To open folder of channel text files into numpy array'
+data=load_text_taini_files()
 
-
-'Function below loads the data in numpy format, no MNE'
-#data2=load_16channel_opto(3)
-
-'Function below loads the data and makes the MNE data object, specify how many headstages'
-
-custom_raw=load_16_channel_opto_mne(4)
-
-'This is to make MNE array of filtered data through MNE filt function.'
-#filt=custom_raw.filter(7, 12, fir_design='firwin')
 
 
 'If you have specific times to analyse, load excel spreadsheet of them below.'
-
 #analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
 #stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
+
 'This is if brain state epoch array is available'
 #analysis_times=import_brain_state(prm.get_excelpath() + prm.get_excelname())
+#event_id = {'Wake': 0, 'NREM': 1, 'REM':2, 'Trans':3}
+
+
+
 
 'This is if channel combination array is available for coherence is cross-frequency coupling analyses'
 #channel_combo=import_channel_combo(prm.get_excelpath() + prm.get_channel_combo_name())
 
-'This below is a function to get actual stimulation times. Load one individual headstage, non-MNE format.'
-#stimulations = actual_stim_times(data,  prm.get_sampling_rate())    
-#
-
-'This outputs the entrainment ratio for one channel'
-#multiple_entrainmentratio(analysis_times, data[:, 15])
-    
-
-'This outputs theta delta ratio for one channel'
-#multiple_theta_delta(analysis_times, data[:, 15])
-
-'This outputs multiple PSD plots for one channel'
-#multiple_psds(analysis_times, data[:, 30])
-
-'This function calculates theta_delta ratio and entrainment for all channels in a 16 channel headstage'
-'It outputs as excel spreadsheet in file, have to specify animal name as string'
-#sixteenchan_thetadelta_entrainment(data, analysis_times, "VGAT_481")
+'Functin below loads the data in numpy format'
+#data=load_32channel_individually()
 
 
-'This below adds the epochs to the object.'
-###
-#epochs=mne.Epochs(custom_raw, stim, baseline= None, 
-#           detrend=None, tmin=-2, tmax=3, )
+'Function below loads the data and makes the MNE data object'
+#custom_raw=load_32_EEG("101")
 
-#epochs=mne.Epochs(custom_raw, stim, event_id=[0], baseline= None, 
-          # detrend=None, tmin=-1, tmax=1)
-
-#picks =[14, 15]
-
-'This can average the epochs'
-#avgepochs=epochs.average()
-
-'This is to do PSD plots of the epochs'
-
-#epochs.plot_psd(custom_raw, fmin= 1, fmax=15, tmin=-10, tmax=10, picks=[15, 16])
+'This is to make MNE array of filtered data through MNE filt function.'
+#filt=custom_raw.filter(100, 300, fir_design='firwin')
 
 
 'Creates epoch file. Creates epochs from analysis times.'
-#stim=create_brain_state_epochs(analysis_times, prm.get_sampling_rate())
+
+#stim=create_brain_state_epochs(analysis_times,  prm.get_sampling_rate())
+
+'This below adds the epochs to the object.'
+
+#epochs=mne.Epochs(custom_raw, stim,
+#                  baseline= None, detrend=None, tmin=-2, tmax=3)
+
+#picks =[14, 15]
+
+'Dictionary for color of traces'
+#colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
+#     emg='g', ref_meg='steelblue', misc='k', stim='b',
+#     resp='k', chpi='k')
+
+
 
 'Functions for evoked plots'
 #evoked= epochs.average().pick_types(eeg=True, emg=True)#to average epochs.
-#evoked.plot([31], time_unit='s') #to plot these epochs, first array is channel number.
+#evoked.plot([0], time_unit='s') #to plot these epochs, first array is channel number.
+
+'Still need to get correct channels and maybe a bit more threshold'
+#epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes. 
+
+##evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
+
+
+#evoked= epochs.average().pick_types(eeg=True)
+#evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
+
+
+
+
+
+'This below is a function to get seizure epochs. Need channel to run throgh, dataset, sampling rate, and sigmas to set threshold'
+#stimulations= seizure_times(15, filt,  prm.get_sampling_rate(), 3)   
+
+
+#sub_data1, times =custom_raw[15, 0:21960704]
 #
-#epochs.plot(n_epochs=1, block=True, 
-#            scalings= 'auto', picks=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46, 47, 48]) #block episodes. 
-#[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46, 47, 48]
+#plt.plot(data_abs[0])
+#plt.plot(300)
 
-'The following is to create psd plots of epochs'
 
-#epochs.plot_psd( fmin= 0, fmax=15, tmin=-10, tmax=0, picks=[31])
-
-#epochs.plot_image(picks=[31])
 
 'To do a basic plot below. The following can be added for specifc order of channels order=[4, 5, 3, 0, 1, 14, 15, 16]'
-colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
-     emg='g', ref_meg='steelblue', misc='k', stim='b',
-     resp='k', chpi='k')
 
-custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0, 1, 2, 3, 11, 16, 17, 18, 27, 32, 33, 34, 43,
-                                                                         48, 49, 50, 59], show_options = "true" )#
-'This is to plot coherence below'
-#multiple_coherence(analysis_times, custom_raw)
+
+#filt.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], show_options = "true" )#
+
+
+#
+#filt.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,
+#                                    14,15,16,32,17,18,19,20,21,22,
+#                                    23,24,25,26,27,28,29,30,31,32], show_options = "true" )#
+
+
 
 'The following is to calculate coherence'
 
@@ -141,7 +140,27 @@ custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0, 1, 2
 
 'The following is to create psd plots of epochs'
 
-#epochs.plot_psd(custom_raw, fmin= 1, fmax=15, tmin=-10, tmax=10, picks=[15])
+#epochs.plot_psd(fmin= 0, fmax=40, tmin=-10, tmax=10, picks=[15])
+#()
+
+
+'This is to make figures with Matplotlib and not MNE'
+
+plot_all(data[8], prm.get_sampling_rate(),'k')
+plot_all(data[9]-500, prm.get_sampling_rate(),'k')
+plot_all(data[10]-1000, prm.get_sampling_rate(),'k')
+plot_all(data[11]-1500, prm.get_sampling_rate(),'k')
+plot_all(data[12]-2000, prm.get_sampling_rate(),'k')
+plot_all(data[13]-2500, prm.get_sampling_rate(),'k')
+plot_all(data[14]-3000, prm.get_sampling_rate(),'k')
+plot_all(data[0]-3500, prm.get_sampling_rate(), 'k')
+plot_all(data[1]-4000, prm.get_sampling_rate(),'k')
+plot_all(data[2]-4500, prm.get_sampling_rate(),'k')
+plot_all(data[3]-5000, prm.get_sampling_rate(),'k')
+plot_all(data[4]-5500, prm.get_sampling_rate(),'k')
+plot_all(data[5]-6000, prm.get_sampling_rate(),'k')
+plot_all(data[6]-6500, prm.get_sampling_rate(),'k')
+plot_all(data[7]-7000, prm.get_sampling_rate(),'k')
 
 
 
@@ -187,13 +206,6 @@ custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0, 1, 2
 #    n_cycles = 'scaled by freqs' if not isinstance(n_cycles, int) else n_cycles
 #    ax.set_title('Sim: Using Morlet wavelet, n_cycles = %s' % n_cycles)
 #plt.tight_layout()
-
-
-
-
-
-
-
 
 
 
