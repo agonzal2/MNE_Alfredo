@@ -23,12 +23,12 @@ prm = parameters.Parameters()
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\S7001_D2_2018-06-21_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
+    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\TAINI_5min_1024\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\')
-    prm.set_excelname('S7001_D2_Seizures.xls') 
+    prm.set_excelname('S7001_D2_Seizures_n.xls') 
     prm.set_channel_combo_name('Short_connections.xls') 
-    prm.set_sampling_rate(1000)
+    prm.set_sampling_rate(20000)
     prm.set_starttime(1036) #using as experiment
     prm.set_endtime(1046)   
     prm.set_starttime2(994) #using as control.
@@ -42,9 +42,14 @@ def init_params(): #Defines initial parameters used throughout.
 'Initialize the parameters'
 init_params()
 
+'To open folder of channel text files into numpy array'
+data=load_text_taini_files()
+
+
+
 'If you have specific times to analyse, load excel spreadsheet of them below.'
-analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
-stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
+#analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
+#stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
 
 'This is if brain state epoch array is available'
@@ -74,15 +79,15 @@ stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time a
 
 'This below adds the epochs to the object.'
 
-epochs=mne.Epochs(custom_raw, stim,
-                  baseline= None, detrend=None, tmin=-2, tmax=4)
+#epochs=mne.Epochs(custom_raw, stim,
+#                  baseline= None, detrend=None, tmin=-2, tmax=3)
 
 #picks =[14, 15]
 
 'Dictionary for color of traces'
-colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
-     emg='g', ref_meg='steelblue', misc='k', stim='b',
-     resp='k', chpi='k')
+#colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
+#     emg='g', ref_meg='steelblue', misc='k', stim='b',
+#     resp='k', chpi='k')
 
 
 
@@ -91,7 +96,7 @@ colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
 #evoked.plot([0], time_unit='s') #to plot these epochs, first array is channel number.
 
 'Still need to get correct channels and maybe a bit more threshold'
-epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes. 
+#epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes. 
 
 ##evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
 
@@ -117,7 +122,7 @@ epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=
 'To do a basic plot below. The following can be added for specifc order of channels order=[4, 5, 3, 0, 1, 14, 15, 16]'
 
 
-#custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], show_options = "true" )#
+#filt.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], show_options = "true" )#
 
 
 #
@@ -141,18 +146,22 @@ epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=
 
 'This is to make figures with Matplotlib and not MNE'
 
-#plot_all(data[:,0], prm.get_sampling_rate(), 'k')
-#plot_all(data[:,3]-500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,6]-1000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,9]-1500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,12]-2000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,15]-2500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,18]-3000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,21]-3500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,24]-4000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,27]-4500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,30]-5000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,32]*10-7000, prm.get_sampling_rate(),'b')
+plot_all(data[8], prm.get_sampling_rate(),'k')
+plot_all(data[9]-500, prm.get_sampling_rate(),'k')
+plot_all(data[10]-1000, prm.get_sampling_rate(),'k')
+plot_all(data[11]-1500, prm.get_sampling_rate(),'k')
+plot_all(data[12]-2000, prm.get_sampling_rate(),'k')
+plot_all(data[13]-2500, prm.get_sampling_rate(),'k')
+plot_all(data[14]-3000, prm.get_sampling_rate(),'k')
+plot_all(data[0]-3500, prm.get_sampling_rate(), 'k')
+plot_all(data[1]-4000, prm.get_sampling_rate(),'k')
+plot_all(data[2]-4500, prm.get_sampling_rate(),'k')
+plot_all(data[3]-5000, prm.get_sampling_rate(),'k')
+plot_all(data[4]-5500, prm.get_sampling_rate(),'k')
+plot_all(data[5]-6000, prm.get_sampling_rate(),'k')
+plot_all(data[6]-6500, prm.get_sampling_rate(),'k')
+plot_all(data[7]-7000, prm.get_sampling_rate(),'k')
+
 
 
 'Plotting Time frequency representation with DPSS Tapers.'

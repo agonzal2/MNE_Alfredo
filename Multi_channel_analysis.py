@@ -10,6 +10,7 @@ import parameters
 import matplotlib.pyplot as plt
 prm = parameters.Parameters()
 from OpenEphys import *
+from power_spectrum import*
 import mne
 import xlrd
 import pandas as pd
@@ -29,10 +30,11 @@ def sixteenchan_thetadelta_entrainment(data, analysis_times, animal):
    
     #Get number of analyis_times
     num_rows, num_cols=analysis_times.shape
-    #Use number of times to make zero arrays for thetadelta with lengh of channels"
+    #Use number of times to make zero arrays for thetadelta, entrinment,coherence,pre-entrainment
     thetadeltaarray= zeros(shape=(16, num_rows))
     entrainmentarray=zeros(shape=(16, num_rows))
-    
+    coherencearray=zeros(shape=(16, num_rows))
+    preentrainment=zeros(shape=(16, num_rows))
     #Run through all the channels, calculate theta_delta ratio and append to results
     for n in range(len(channel_names)):
         thetadeltaresults=multiple_theta_delta(analysis_times, data[:,n])
@@ -53,16 +55,46 @@ def sixteenchan_thetadelta_entrainment(data, analysis_times, animal):
 
     #Run through all the channels, calculate theta_delta ratio and append to results
     for n in range(len(channel_names)):
-        entrainmentresults=multiple_entrainmentratio(analysis_times, data[:,n])
+        entrainmentresults=multiple_entrainmentratio(analysis_times, data[:,n], 'stim')
         entrainmentarray[n]=entrainmentresults 
      #Transpose to run with pandas
     entrainmentarray_tp=entrainmentarray.transpose()
     #Make a pandas dataframe with the transponsed results array
     df2=pd.DataFrame(entrainmentarray_tp)
     #Write array to sheet.
-    df2.to_excel(writer, sheet_name="entrainment", header=channel_names)   
-
+    df2.to_excel(writer, sheet_name="entrainment", header=channel_names)
+    
+    
+    
+    
+    #Run through all the channels, calculate coherence with optogenetics channel and append results
+    for n in range(len(channel_names)):
+        coherenceresults=coherence_data(analysis_times, data[:,n], data[:,16]) #data[:,16] is optogenetics
+        coherencearray[n]=coherenceresults
+    
+    coherencearray_tp=coherencearray.transpose()
+    #Make a pandas dataframe with the transponsed results array
+    df3=pd.DataFrame(coherencearray_tp)
+    #Write array to sheet.
+    df3.to_excel(writer, sheet_name="coherence", header=channel_names)  
+    
+    
+    for n in range(len(channel_names)):
+        entrainmentresults=multiple_entrainmentratio(analysis_times, data[:,n], 'pre-stim')
+        entrainmentarray[n]=entrainmentresults 
+     #Transpose to run with pandas
+    entrainmentarray_tp=entrainmentarray.transpose()
+    #Make a pandas dataframe with the transponsed results array
+    df4=pd.DataFrame(entrainmentarray_tp)
+    #Write array to sheet.
+    df4.to_excel(writer, sheet_name="pre-entrainment", header=channel_names)
+    
+    
+    
+    
     return
+
+    
     
     
     
