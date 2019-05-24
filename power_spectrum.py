@@ -14,6 +14,7 @@ import parameters
 from scipy.signal import coherence
 from initial_processes import *
 import xlsxwriter
+import pandas as pd
 prm = parameters.Parameters()
 
 
@@ -80,12 +81,12 @@ def psd_entrainment_data (sub_data, windowtype, samplingrate, stimfreq) :  # Cal
     f, Pxx_den = signal.periodogram(sub_data, samplingrate, window, samplingrate)
     stimpower= Pxx_den[int(stimfreq)]+Pxx_den[int(stimfreq-1)]+Pxx_den[int(stimfreq+1)]
     
-    print(stimfreq)
-    print(Pxx_den[int(stimfreq)])
-    print(stimfreq-1)
-    print(Pxx_den[int(stimfreq-1)])
-    print(stimfreq+1)
-    print(Pxx_den[int(stimfreq+1)])
+#    print(stimfreq)
+#    print(Pxx_den[int(stimfreq)])
+#    print(stimfreq-1)
+#    print(Pxx_den[int(stimfreq-1)])
+#    print(stimfreq+1)
+#    print(Pxx_den[int(stimfreq+1)])
 
     cumulativepower=Pxx_den[2]+Pxx_den[3]+Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]+Pxx_den[12]
     entrainmentratio=stimpower/cumulativepower
@@ -322,54 +323,147 @@ def multiple_entrainmentratio(analysis_times, data, stim): #Plots PSDs at multip
     
     entrainmentresults= zeros([num_rows])
     
-    if stim == 'pre-stim':
+#    if stim == 'pre-stim':
         
   
-        for n in range(0, num_rows):
-            start_time=(analysis_times.item(n,0))
-            prm.set_starttime(start_time) #using as experiment
-            end_time=(analysis_times.item(n,1))
-            prm.set_endtime(end_time)   
-            start_time2=(analysis_times.item(n,2))
-            prm.set_starttime2(start_time2) #using as control.
-            end_time2=(analysis_times.item(n,3))
-            prm.set_endtime2(end_time2)
-            stimfreq=(analysis_times.item(n,4))
-            prm.set_stimfreq(stimfreq)
+    for n in range(0, num_rows):
+        start_time=(analysis_times.item(n,0))
+        prm.set_starttime(start_time) #using as experiment
+        end_time=(analysis_times.item(n,1))
+        prm.set_endtime(end_time)   
+        start_time2=(analysis_times.item(n,2))
+        prm.set_starttime2(start_time2) #using as control.
+        end_time2=(analysis_times.item(n,3))
+        prm.set_endtime2(end_time2)
+        stimfreq=(analysis_times.item(n,4))
+        prm.set_stimfreq(stimfreq)
+        
             
-                
-            time_axis, sub_data1=sub_time_data(data, prm.get_starttime2(), prm.get_endtime2(), prm.get_sampling_rate())
-    
-            entrainmentratio = psd_entrainment_data(sub_data1, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
-            entrainmentresults[n]=entrainmentratio
+        time_axis, sub_data1=sub_time_data(data, prm.get_starttime2(), prm.get_endtime2(), prm.get_sampling_rate())
+
+        entrainmentratio = psd_entrainment_data(sub_data1, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
+        entrainmentresults[n]=entrainmentratio
        
-    if stim == 'stim':
+#    if stim == 'stim':
         
   
-        for n in range(0, num_rows):
-            start_time=(analysis_times.item(n,0))
-            prm.set_starttime(start_time) #using as experiment
-            end_time=(analysis_times.item(n,1))
-            prm.set_endtime(end_time)   
-            start_time2=(analysis_times.item(n,2))
-            prm.set_starttime2(start_time2) #using as control.
-            end_time2=(analysis_times.item(n,3))
-            prm.set_endtime2(end_time2)
-            stimfreq=(analysis_times.item(n,4))
-            prm.set_stimfreq(stimfreq)
+    for n in range(0, num_rows):
+        start_time=(analysis_times.item(n,0))
+        prm.set_starttime(start_time) #using as experiment
+        end_time=(analysis_times.item(n,1))
+        prm.set_endtime(end_time)   
+        start_time2=(analysis_times.item(n,2))
+        prm.set_starttime2(start_time2) #using as control.
+        end_time2=(analysis_times.item(n,3))
+        prm.set_endtime2(end_time2)
+        stimfreq=(analysis_times.item(n,4))
+        prm.set_stimfreq(stimfreq)
+        
             
-                
-            time_axis, sub_data=sub_time_data(data, prm.get_starttime(), prm.get_endtime(), prm.get_sampling_rate())
-    
-    
-            entrainmentratio = psd_entrainment_data(sub_data, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
-            entrainmentresults[n]=entrainmentratio
+        time_axis, sub_data=sub_time_data(data, prm.get_starttime(), prm.get_endtime(), prm.get_sampling_rate())
+
+
+        entrainmentratio = psd_entrainment_data(sub_data, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
+        entrainmentresults[n]=entrainmentratio
        
     
      
     return entrainmentresults
 
+
+'Below calculates entrainment ratio before and after stimulation for that duration and makes a plot'
+
+def multiple_entrainmentratio_with_plots(stimulations, data, stim_duration): #Plots PSDs at multiple times when fed in an excel spreadsheet.
        
+    #Get number of analysis epochs
+    numberstim=len(stimulations)
+    
+    entrainmentresults= zeros([numberstim, 2])
+
+    channels=prm.get_headstages()*16
+    
+    entrainment_prestim_array=zeros([numberstim, channels])
+    entrainment_stim=zeros([numberstim, channels])
+    
+    channel_names=['0', 'hpc_mi', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
+               'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
+               'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
+               'hpc_mid_d_2', 'hpc_mid_s_2', 'hpc_ros_d_2', 'hpc_ros_s_2', 'pfc_d_2', 
+               'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
+               'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
+               'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
+               'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_ct_d_3', 'hpc_ct_s_3', 
+               'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
+               'hpc_mid_d_4', 'hpc_mid_s_4', 'hpc_ros_d_4', 'hpc_ros_s_4', 'pfc_d_4', 
+               'pfc_s_4', 'cx1_4', 'cx2_4', 'hpc_ct_d_4', 'hpc_ct_s_4', 
+               'EMG1_4', 'EMG2_4', 'cb_deep_4', 'cb_sup_4', 'hp_c_d_4', 'hpc_c_s_4','opto']
+    
+  
+    
+    
+    
+    
+    
+    for t in range(0, channels):
+        
+        for n in range(0, numberstim):
+            
+            'Entrainment during stimulation'
+            start_time=stimulations[n]
+            prm.set_starttime(start_time) #using as experiment
+            end_time=stimulations[n]+stim_duration
+            prm.set_endtime(end_time)
+                
+            time_axis, sub_data=sub_time_data(data[:,t], prm.get_starttime(), prm.get_endtime(), prm.get_sampling_rate())
+            entrainmentratio = psd_entrainment_data(sub_data, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
+            entrainmentresults[n,1]=entrainmentratio
+            
+            entrainment_stim[n,t]=entrainmentratio
+            
+            'Entrainment before stimulation'
+            end_time=stimulations[n]
+            prm.set_endtime(end_time)
+            start_time=stimulations[n]-stim_duration
+            prm.set_starttime(start_time) #using as experiment
+            
+            time_axis, sub_data=sub_time_data(data[:,t], prm.get_starttime(), prm.get_endtime(), prm.get_sampling_rate())
+            entrainmentratio = psd_entrainment_data(sub_data, prm.get_windowtype(), prm.get_sampling_rate(), prm.get_stimfreq())
+            entrainmentresults[n,0]=entrainmentratio
+        
+            entrainment_prestim_array[n,t]=entrainmentratio
+            
+        fig, ax = plt.subplots()
+        x0=full(len(entrainmentresults), 0.5)
+        x1=full(len(entrainmentresults), 1)
+        
+        scatter=ax.scatter(x0, entrainmentresults[:,0], c='k')
+        scatter=ax.scatter(x1, entrainmentresults[:,1], c='b')
+        plt.ylim(0,1)
+        plt.title(str(channel_names[t]))
+        plt.savefig(str(prm.get_filepath()) +'_Channel_'+ str(t)+'.png')
+        plt.close()
+            
+    pandas_stim_array = pd.DataFrame(entrainment_stim)
+    pandas_prestim_array=pd.DataFrame(entrainment_prestim_array)
+    
+    
+    filepath= str(prm.get_filepath()) + "Entrainment_Numbers_per_Channel_Stim_noSTim.xlsx"
+    
+    with pd.ExcelWriter(filepath) as writer:
+        
+        pandas_stim_array.to_excel(writer, sheet_name="Stim_entrain") 
+        pandas_prestim_array.to_excel(writer, sheet_name='Prestim_entrain')
+    
+     
+        
+        
+
+        
+    
+        
+    
+     
+    return 
     
 def multiple_theta_delta(analysis_times, data): #Plots PSDs at multiple times when fed in an excel spreadsheet.
        

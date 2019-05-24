@@ -28,7 +28,7 @@ import xlsxwriter
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('F:\\190129\\2019-01-29_14-28-56\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
+    prm.set_filepath('F:\\ERUK\\Tethered Recordings\\ERUK Animals\\Alina Analysis\\2019 recordings\\190306\\2019-03-06_12-48-42\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')
     prm.set_excelname('180814_VGATCRE_475_481_390_3Hz.xls')#
@@ -39,20 +39,31 @@ def init_params(): #Defines initial parameters used throughout.
     prm.set_endtime2(1004)
     prm.set_windowtype('hann')
     prm.set_stimfreq(10)
+    prm.set_headstages(4)
+    prm.set_stimduration(10)
+    
 
 'Initialize the parameters'
 init_params()
+
+
+'This loads 4 headstages in numpy, calculates stimulations, plots entrainment, saves an excel of it'
+#data=load_16channel_opto(prm.get_headstages())
+#stimulations = actual_stim_times(data,  prm.get_sampling_rate(), prm.get_headstages())  
+multiple_entrainmentratio_with_plots(stimulations, data, prm.get_stimduration())
+
+
 
 'Function below loads each 16-channel-headstage individually.'
 #data=load_16channel_opto_individually(3)
 
 
 'Function below loads the data in numpy format, no MNE'
-#data2=load_16channel_opto(3)
+#data=load_16channel_opto(prm.get_headstages())
 
 'Function below loads the data and makes the MNE data object, specify how many headstages'
 
-custom_raw=load_16_channel_opto_mne(4)
+#custom_raw=load_16_channel_opto_mne(3)
 
 'This is to make MNE array of filtered data through MNE filt function.'
 #filt=custom_raw.filter(7, 12, fir_design='firwin')
@@ -70,12 +81,21 @@ custom_raw=load_16_channel_opto_mne(4)
 #channel_combo=import_channel_combo(prm.get_excelpath() + prm.get_channel_combo_name())
 
 'This below is a function to get actual stimulation times. Load one individual headstage, non-MNE format.'
-#stimulations = actual_stim_times(data,  prm.get_sampling_rate())    
+#stimulations = actual_stim_times(data,  prm.get_sampling_rate(), prm.get_headstages())    
 #
 
 'This outputs the entrainment ratio for one channel'
-#multiple_entrainmentratio(analysis_times, data[:, 15])
-    
+#multiple_entrainmentratio_with_plots(stimulations, data, prm.get_stimduration())
+
+
+#fig, ax = plt.subplots()
+#x0=full(len(entrainmentresults), 0.5)
+#x1=full(len(entrainmentresults), 1)
+#
+#scatter=ax.scatter(x0, entrainmentresults[:,0], c='k')
+#scatter=ax.scatter(x1, entrainmentresults[:,1], c='b')
+
+
 
 'This outputs theta delta ratio for one channel'
 #multiple_theta_delta(analysis_times, data[:, 15])
@@ -124,12 +144,12 @@ custom_raw=load_16_channel_opto_mne(4)
 #epochs.plot_image(picks=[31])
 
 'To do a basic plot below. The following can be added for specifc order of channels order=[4, 5, 3, 0, 1, 14, 15, 16]'
-colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
-     emg='g', ref_meg='steelblue', misc='k', stim='b',
-     resp='k', chpi='k')
-
-custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0, 1, 2, 3, 11, 16, 17, 18, 27, 32, 33, 34, 43,
-                                                                         48, 49, 50, 59], show_options = "true" )#
+#colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
+#     emg='g', ref_meg='steelblue', misc='k', stim='b',
+#     resp='k', chpi='k')
+#
+#custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0, 1, 2, 3, 11, 16, 17, 18, 27, 32, 33, 34, 43,
+#                                                                         48, 49, 50, 59], show_options = "true" )#
 'This is to plot coherence below'
 #multiple_coherence(analysis_times, custom_raw)
 

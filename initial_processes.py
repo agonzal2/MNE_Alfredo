@@ -472,27 +472,91 @@ def create_brain_state_epochs(analysis_times, sampling_rate): #Makes epoch file 
     return epochs
 
 
-def actual_stim_times(data, sampling_rate):##for use with normal opto
+def actual_stim_times(data, sampling_rate, headstages):##for use with normal opto
     
-    times=[]
-    times=data[:,16] > 300
-    start_times=[]
+    if headstages == 1:
+        times=[]
+        times=data[:,16] > 300
+        start_times=[]
+        
+        for n in range(len(times)): 
+            if times[n] == True:
+                start_times.append(n)
+        
+        stim_times=[]    
+        
+        for n in range(len(start_times)):
+            x=n-1
+            if n ==0:
+                stim_times.append(start_times[n]/sampling_rate)
+            elif start_times[n]-start_times[n-1]>(sampling_rate*20):
+                stim_times.append(start_times[n]/sampling_rate)
+        
+        
+        stimulations= asarray(stim_times)
+        
+    if headstages ==2:
+        times=[]
+        times=data[:,32] > 300
+        start_times=[]
+        
+        for n in range(len(times)): 
+            if times[n] == True:
+                start_times.append(n)
+        
+        stim_times=[]    
+        
+        for n in range(len(start_times)):
+            x=n-1
+            if n ==0:
+                stim_times.append(start_times[n]/sampling_rate)
+            elif start_times[n]-start_times[n-1]>(sampling_rate*20):
+                stim_times.append(start_times[n]/sampling_rate)
+        
+        
+        stimulations= asarray(stim_times)
     
-    for n in range(len(times)): 
-        if times[n] == True:
-            start_times.append(n)
-    
-    stim_times=[]    
-    
-    for n in range(len(start_times)):
-        x=n-1
-        if n ==0:
-            stim_times.append(start_times[n]/sampling_rate)
-        elif start_times[n]-start_times[n-1]>(sampling_rate*20):
-            stim_times.append(start_times[n]/sampling_rate)
-    
-    
-    stimulations= asarray(stim_times)
+    if headstages ==3:
+        times=[]
+        times=data[:,48] > 300
+        start_times=[]
+        
+        for n in range(len(times)): 
+            if times[n] == True:
+                start_times.append(n)
+        
+        stim_times=[]    
+        
+        for n in range(len(start_times)):
+            x=n-1
+            if n ==0:
+                stim_times.append(start_times[n]/sampling_rate)
+            elif start_times[n]-start_times[n-1]>(sampling_rate*20):
+                stim_times.append(start_times[n]/sampling_rate)
+        
+        
+        stimulations= asarray(stim_times)
+        
+    if headstages ==4:
+        times=[]
+        times=data[:,64] > 300
+        start_times=[]
+        
+        for n in range(len(times)): 
+            if times[n] == True:
+                start_times.append(n)
+        
+        stim_times=[]    
+        
+        for n in range(len(start_times)):
+            x=n-1
+            if n ==0:
+                stim_times.append(start_times[n]/sampling_rate)
+            elif start_times[n]-start_times[n-1]>(sampling_rate*20):
+                stim_times.append(start_times[n]/sampling_rate)
+        
+        
+        stimulations= asarray(stim_times)
     
     return stimulations
 
@@ -571,6 +635,19 @@ def import_spreadsheet(excelfile): #Import analysis times for optogenetic on and
         
     return analysis_times
 
+
+def sub_time_data(data, start_time, end_time, sampling_rate): #Gets time axis and data of specific times.
+    
+    prm.set_filelength(len(data))
+    filelength=prm.get_filelength()
+    timelength=filelength/sampling_rate
+    time_axis = linspace(start_time, end_time, ((end_time-start_time)*sampling_rate))
+    
+    index_start = start_time*sampling_rate
+    index_end = end_time*sampling_rate
+    sub_data = data[int(index_start):int(index_end)]
+    
+    return time_axis, sub_data
 
 def sub_time_data(data, start_time, end_time, sampling_rate): #Gets time axis and data of specific times.
     
