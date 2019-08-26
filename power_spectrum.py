@@ -79,8 +79,7 @@ def psd_entrainment_data (sub_data, windowtype, samplingrate, stimfreq) :  # Cal
     
     window=scipy.signal.get_window(windowtype, samplingrate)
     f, Pxx_den = signal.periodogram(sub_data, samplingrate, window, samplingrate)
-    stimpower= Pxx_den[int(stimfreq+1)]+Pxx_den[int(stimfreq)]+Pxx_den[int(stimfreq+2)]
-    
+    stimpower= Pxx_den[int(stimfreq)]+Pxx_den[int(stimfreq-1)]+Pxx_den[int(stimfreq+1)]
     
 #    print(stimfreq)
 #    print(Pxx_den[int(stimfreq)])
@@ -89,7 +88,7 @@ def psd_entrainment_data (sub_data, windowtype, samplingrate, stimfreq) :  # Cal
 #    print(stimfreq+1)
 #    print(Pxx_den[int(stimfreq+1)])
 
-    cumulativepower=Pxx_den[3]+Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]
+    cumulativepower=Pxx_den[2]+Pxx_den[3]+Pxx_den[4]+Pxx_den[5]+Pxx_den[6]+Pxx_den[7]+Pxx_den[8]+Pxx_den[9]+Pxx_den[10]+Pxx_den[11]+Pxx_den[12]
     entrainmentratio=stimpower/cumulativepower
     
 
