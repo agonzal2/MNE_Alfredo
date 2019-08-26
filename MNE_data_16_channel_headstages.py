@@ -31,7 +31,7 @@ def init_params(): #Defines initial parameters used throughout.
     prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\S7013_D1\\S7013_D1_2018-09-28_10-46-00\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\')
-    prm.set_excelname('S7013_D1_NREM.xls')#
+    prm.set_excelname('S7013_D1_NREM.xls')
     prm.set_sampling_rate(1000)
     prm.set_starttime(1036) #using as experiment
     prm.set_endtime(1046)   
@@ -92,7 +92,7 @@ custom_raw=load_16_channel_opto_mne(4)
 #fig, ax = plt.subplots()
 #x0=full(len(entrainmentresults), 0.5)
 #x1=full(len(entrainmentresults), 1)
-#
+
 #scatter=ax.scatter(x0, entrainmentresults[:,0], c='k')
 #scatter=ax.scatter(x1, entrainmentresults[:,1], c='b')
 
@@ -110,7 +110,7 @@ custom_raw=load_16_channel_opto_mne(4)
 
 
 'This below adds the epochs to the object.'
-###
+
 #epochs=mne.Epochs(custom_raw, stimulations, baseline= None, 
 #           detrend=None, tmin=-.5, tmax=1, )
 
