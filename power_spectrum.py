@@ -74,7 +74,7 @@ def psd_2chan (sub_data1, sub_data2, windowtype, samplingrate, stimfreq) :  # Ca
     plt.savefig(str(prm.get_excelpath()) + str(prm.get_excelname()) + str(prm.get_starttime())+ 'and'+ str(prm.get_starttime2())+'.png')
     plt.close()
     return
-
+#Unable to merge"
 def psd_entrainment_data (sub_data, windowtype, samplingrate, stimfreq) :  # Calculates PSD, plots it, saves it
     
     window=scipy.signal.get_window(windowtype, samplingrate)
