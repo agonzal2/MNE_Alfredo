@@ -26,7 +26,7 @@ def init_params(): #Defines initial parameters used throughout.
     prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\S7001_D2_2018-06-21_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\')
-    prm.set_excelname('S7001_D2_Seizures.xls') 
+    prm.set_excelname('S7001_D2_Seizures_0.5less.xls') 
     prm.set_channel_combo_name('Short_connections.xls') 
     prm.set_sampling_rate(1000)
     prm.set_starttime(1036) #using as experiment
@@ -38,13 +38,13 @@ def init_params(): #Defines initial parameters used throughout.
     prm.set_channel_1(0)
     prm.set_channel_2(1)
 
-
+print(prm.get_excelpath())
 'Initialize the parameters'
 init_params()
 
 'If you have specific times to analyse, load excel spreadsheet of them below.'
-analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
-stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
+#analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
+#stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
 
 'This is if brain state epoch array is available'
@@ -74,15 +74,15 @@ stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time a
 
 'This below adds the epochs to the object.'
 
-epochs=mne.Epochs(custom_raw, stim,
-                  baseline= None, detrend=None, tmin=-2, tmax=4)
+#epochs=mne.Epochs(custom_raw, stim,
+#                  baseline= None, detrend=None, tmin=-2, tmax=4)
 
 #picks =[14, 15]
 
 'Dictionary for color of traces'
-colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
-     emg='g', ref_meg='steelblue', misc='k', stim='b',
-     resp='k', chpi='k')
+#colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
+#     emg='g', ref_meg='steelblue', misc='k', stim='b',
+#     resp='k', chpi='k')
 
 
 
