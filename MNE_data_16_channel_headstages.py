@@ -60,10 +60,12 @@ init_params()
 'Function below loads the data in numpy format, no MNE'
 #data=load_16channel_opto(prm.get_headstages())
 
-'Function below loads the data and makes the MNE data object, specify how many headstages ----COHERENCE!'
+'Functions below load the data and make the MNE data object, specify how many headstages'
+#Below loads 16 channel arrays.
+custom_raw=load_16_channel_opto_mne(4)
 
-#custom_raw=load_16_channel_opto_mne(4)
-custom_raw=load_32_EEG("100")
+#Below loads 32-channel array.
+#custom_raw=load_32_EEG("100")
 'This is to make MNE array of filtered data through MNE filt function.'
 #filt=custom_raw.filter(0, 480, fir_design='firwin')
 
@@ -73,13 +75,11 @@ custom_raw=load_32_EEG("100")
 #analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
 #stim=create_epochs(custom_raw, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
-'This is if brain state epoch array is available ----COHERENCE!'
-#print(prm.get_excelpath())
-#print(prm.get_excelname())
-analysis_times=import_brain_state('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\' + prm.get_excelname()) ##prm.get_excelpath()
+'This is if brain state epoch array is available'
+#analysis_times=import_brain_state(prm.get_excelpath() + prm.get_excelname()) 
 
-'This is if channel combination array is available for coherence is cross-frequency coupling analyses ----COHERENCE!'
-channel_combo=import_channel_combo('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\' + 'Short_connections.xls') #prm.get_excelpath() + prm.get_channel_combo_name()
+'This is if channel combination array is available for coherence is cross-frequency coupling analyses'
+#channel_combo=import_channel_combo(prm.get_excelpath() + prm.get_channel_combo_name()) #
 
 'This below is a function to get actual stimulation times. Load one individual headstage, non-MNE format.'
 #stimulations = actual_stim_times(data,  prm.get_sampling_rate(), prm.get_headstages())    
@@ -155,9 +155,9 @@ channel_combo=import_channel_combo('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_Oct
 'This is to plot coherence below'
 #multiple_coherence(analysis_times, custom_raw)
 
-'The following is to calculate coherence ----COHERENCE!'
+'The following is to calculate coherence'
 
-coh_average, coh_std, f= global_coherence(analysis_times, channel_combo, custom_raw)
+#coh_average, coh_std, f= global_coherence(analysis_times, channel_combo, custom_raw)
 
 
 
