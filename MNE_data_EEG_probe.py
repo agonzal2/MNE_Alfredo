@@ -44,7 +44,7 @@ init_params()
 
 'If you have specific times to analyse, load excel spreadsheet of them below.'
 #analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
-#stim=create_epochs(analysis_times, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
+stim=create_epochs(stimulations, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
 
 'This is if brain state epoch array is available'

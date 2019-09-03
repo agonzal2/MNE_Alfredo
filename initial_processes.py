@@ -163,24 +163,23 @@ def load_16_channel_opto_mne(headstage_number):
         
         n_channels=65
         
-        channel_names=['hpc_mid_deep', 'hpc_mid_sup', 'hpc_ros_deep', 'hpc_ros_sup', 'pfc_deep', 
-                       'pfc_sup', 'cx1', 'cx2', 'hpc_contra_deep', 'hpc_contra_sup', 
-                       'EMG1', 'EMG2', 'cb_deep', 'cb_sup', 'hp_caudal_deep', 'hpc_caudal_sup',
-                       'hpc_mid_d_2', 'hpc_mid_s_2', 'hpc_ros_d_2', 'hpc_ros_s_2', 'pfc_d_2', 
-                       'pfc_sup_2', 'cx1_2', 'cx2_2', 'hpc_ct_d_2', 'hpc_ct_s_2', 
-                       'EMG1_2', 'EMG2_2', 'cb_deep_2', 'cb_sup_2', 'hp_caud_d_2', 'hpc_caud_s_2',
-                       'hpc_mid_d_3', 'hpc_mid_s_3', 'hpc_ros_d_3', 'hpc_ros_s_3', 'pfc_d_3', 
-                       'pfc_s_3', 'cx1_3', 'cx2_3', 'hpc_ct_d_3', 'hpc_ct_s_3', 
-                       'EMG1_3', 'EMG2_3', 'cb_deep_3', 'cb_sup_3', 'hp_c_d_3', 'hpc_c_s_3',
-                       'hpc_mid_d_4', 'hpc_mid_s_4', 'hpc_ros_d_4', 'hpc_ros_s_4', 'pfc_d_4', 
-                       'pfc_s_4', 'cx1_4', 'cx2_4', 'hpc_ct_d_4', 'hpc_ct_s_4', 
-                       'EMG1_4', 'EMG2_4', 'cb_deep_4', 'cb_sup_4', 'hp_c_d_4', 'hpc_c_s_4',
-                       
+        channel_names=['hpc_m_i_a', 'hpc_m_i_b', 'somato_a', 'somato_b', 'BLANK', 
+                       'hpc_r_c_a', 'hpc_r_c_b', 'hpc_m_c_a', 'hpc_m_c_b', 'hpc_c_c_a', 
+                       'hpc_c_c_b', 'EMG', 'cb_a', 'cb_b', 'hpc_c_i_a', 'hpc_c_i_b',
+                       'hpc_m_i_a_2', 'hpc_m_i_b_2', 'somato_a_2', 'somato_b_2', 'BLANK_2', 
+                       'hpc_r_c_a_2', 'hpc_r_c_b_2', 'hpc_m_c_a_2', 'hpc_m_c_b_2', 'hpc_c_c_a_2', 
+                       'hpc_c_c_b_2', 'EMG_2', 'cb_a_2', 'cb_b_2', 'hpc_c_i_a_2', 'hpc_c_i_b_2',
+                       'hpc_m_i_a_3', 'hpc_m_i_b_3', 'somato_a_3', 'somato_b_3', 'BLANK_3', 
+                       'hpc_r_c_a_3', 'hpc_r_c_b_3', 'hpc_m_c_a_3', 'hpc_m_c_b_3', 'hpc_c_c_a_3', 
+                       'hpc_c_c_b_3', 'EMG_3', 'cb_a_3', 'cb_b_3', 'hpc_c_i_a_3', 'hpc_c_i_b_3',
+                       'hpc_m_i_a_4', 'hpc_m_i_b_4', 'somato_a_4', 'somato_b_4', 'BLANK_4', 
+                       'hpc_r_c_a_4', 'hpc_r_c_b_4', 'hpc_m_c_a_4', 'hpc_m_c_b_4', 'hpc_c_c_a_4', 
+                       'hpc_c_c_b_4', 'EMG_4', 'cb_a_4', 'cb_b_4', 'hpc_c_i_a_4', 'hpc_c_i_b_4',
                        'Opto']
-        channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
-                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
-                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
-                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','emg','eeg','eeg','eeg','eeg',
+        channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
+                       'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
                        'stim']
     
     
