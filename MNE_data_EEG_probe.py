@@ -30,11 +30,11 @@ global w
 
 prm = parameters.Parameters()
 
-#prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\S7001_D2_2018-06-21_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
-prm.set_filepath('/media/jorge/Data/Jorge/DATA/OpenEphisData/S7001_D2_2018-06-21_09-58-00')
-prm.set_filename('E17.txt')
+prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\S7001_D2_2018-06-21_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
+#prm.set_filepath('/media/jorge/Data/Jorge/DATA/OpenEphisData/S7001_D2_2018-06-21_09-58-00')
+#prm.set_filename('E17.txt')
 #prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\DATA\\')
-prm.set_excelpath('/media/jorge/Data/Jorge/DATA/')
+#prm.set_excelpath('/media/jorge/Data/Jorge/DATA/')
 prm.set_excelname('300_abs_thresh.xls') 
 prm.set_channel_combo_name('Short_connections.xls') 
 prm.set_sampling_rate(1000)
