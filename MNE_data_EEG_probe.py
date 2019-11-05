@@ -340,6 +340,7 @@ if __name__=="__main__":
 #init_params()
 
 
+
 'This is if brain state epoch array is available'
 #analysis_times=import_brain_state(prm.get_excelpath() + prm.get_excelname())
 
@@ -355,6 +356,7 @@ if __name__=="__main__":
 'Still need to get correct channels and maybe a bit more threshold'
 #epochs.plot(n_epochs=1, picks=[0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes.
 #evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
+
 #evoked= epochs.average().pick_types(eeg=True)
 #evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
 'This is to make MNE array of filtered data through MNE filt function.'
