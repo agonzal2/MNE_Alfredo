@@ -43,7 +43,7 @@ class Parameters:
         Parameters.excelpath =hst
         
     def get_excelpath(self):
-        return Parameters.excelpath
+        return self.excelpath
 
     def set_excelpath(self, exp):
         Parameters.excelpath = exp

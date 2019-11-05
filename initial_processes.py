@@ -145,19 +145,19 @@ def load_16_channel_opto_mne(headstage_number):
     
      
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')#######load file
-#    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '101')#######load file8
+    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
 
     if headstage_number == 4:
     
         'Add Opto Stim Channel to Data'
     
         data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-#        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
         
         datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
         del data
-#        del data_adc
+        del data_adc
         
         'Below I make the channel names and channel types, this should go in the parameteres file later.'
         
@@ -276,8 +276,8 @@ def load_16_channel_opto_mne(headstage_number):
 def load_32_EEG(source):
    
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '101')
-    data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '101')
+    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')
+    data_aux=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'AUX', dtype = float, session = '0', source = '100')
     
     'Below we append a line to the data array and add the accelrometer data. We transpose to fit the MNE data format.'
     data = np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
@@ -447,10 +447,10 @@ def load_32_EEG(source):
 
 def create_epochs(analysis_times, sampling_rate): #Makes epoch file for MNE of stimulation times.
     
-    num_rows, num_cols=analysis_times.shape
+    num_rows=len(analysis_times)
     epochs= tile(0, (num_rows, 3))
     for n in range(0, num_rows):
-        start_time=(analysis_times.item(n,0))
+        start_time=(analysis_times.item(n))
         epochs[n][0]=start_time*sampling_rate
         epochs[n][2]=n
         
