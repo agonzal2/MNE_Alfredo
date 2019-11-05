@@ -25,7 +25,7 @@ def seizure_times(channel, mne_data_array, sampling_rate, stdev_thresh):##for us
     data=mne_data_array.get_data(channel) # Gets data of channel out from array
     data_abs=absolute(data) #Make data absolute.
     stdev_calc=std(data_abs) #Get standard deviation from data.
-    print("Standard deviation is " + stdev_calc) #Print what this, on first data set it was 97.
+    print("Standard deviation is " + str(stdev_calc)) #Print what this, on first data set it was 97.
     times=data_abs > (stdev_thresh*stdev_calc)  #Set threshold to see seizures here
     times_list=times.tolist() #Had to make it back from a numpy array into a list in order to test True below
     start_times=[]
