@@ -27,9 +27,23 @@ class Parameters:
     starttime2=0
     endtime2=90
     stimfreq=10
+    headstages=4
+    
  
+    def get_stimduration(self):
+        return Parameters.stimduration
+    
+    def set_stimduration(self, stdur):
+        Parameters.stimduration = stdur
+    
+    def get_headstages(self):
+        return Parameters.headstages
+    
+    def set_headstages(self, hst):
+        Parameters.excelpath =hst
+        
     def get_excelpath(self):
-        return Parameters.excelpath
+        return self.excelpath
 
     def set_excelpath(self, exp):
         Parameters.excelpath = exp

@@ -30,6 +30,7 @@ import parameters
 
 global w
 
+
 prm = parameters.Parameters()
 
 #prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\S7001_D2_2018-06-21_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
@@ -334,20 +335,22 @@ if __name__=="__main__":
 
      sys.exit(app.exec())
 
+
 'Initialize the parameters'
 #init_params()
 
 
 'This is if brain state epoch array is available'
 #analysis_times=import_brain_state(prm.get_excelpath() + prm.get_excelname())
+
 'This is if channel combination array is available for coherence is cross-frequency coupling analyses'
 #channel_combo=import_channel_combo(prm.get_excelpath() + prm.get_channel_combo_name())
 
+
 'Creates epoch file. Creates epochs from analysis times.'
-#event_id = {'Wake': 0, 'NREM': 1, 'REM':2, 'Trans':3}
+
 #stim=create_brain_state_epochs(analysis_times,  prm.get_sampling_rate())
 'This below adds the epochs to the object.'
-
 
 'Still need to get correct channels and maybe a bit more threshold'
 #epochs.plot(n_epochs=1, picks=[0, 3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes.
@@ -359,16 +362,19 @@ if __name__=="__main__":
 'This below is a function to get seizure epochs.'
 #stimulations= seizure_times(15, filt,  prm.get_sampling_rate(), 5)
 #sub_data1, times =filt[15, 0:21960704]
-#
+
+
 #plt.plot(data_abs[0])
 #plt.plot(300)
 'To do a basic plot below. The following can be added for specifc order of channels order=[4, 5, 3, 0, 1, 14, 15, 16]'
 
-#
+
 'The following is to calculate coherence'
 #coh_average, coh_std, f= global_coherence(analysis_times, channel_combo, custom_raw)
 'The following is to create psd plots of epochs'
+
 #epochs.plot_psd(custom_raw, fmin= 1, fmax=15, tmin=-10, tmax=10, picks=[15])
+
 'Plotting Time frequency representation with DPSS Tapers.'
 #
 #freqs = np.arange(1., 16., 1.)
