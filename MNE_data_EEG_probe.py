@@ -23,7 +23,7 @@ prm = parameters.Parameters()
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\S7001_D2_2018-06-21_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
+    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\Test\\S7027_D2-A\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\')
     prm.set_excelname('S7001_D2_Seizures_0.5less.xls') 
@@ -44,7 +44,7 @@ init_params()
 
 'If you have specific times to analyse, load excel spreadsheet of them below.'
 #analysis_times=import_spreadsheet(prm.get_excelpath() + prm.get_excelname()) #Imports spreadsheet
-stim=create_epochs(stimulations, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
+#stim=create_epochs(stimulations, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
 
 
 'This is if brain state epoch array is available'
@@ -62,7 +62,7 @@ stim=create_epochs(stimulations, prm.get_sampling_rate()) #Creates stim time arr
 
 
 'Function below loads the data and makes the MNE data object'
-#custom_raw=load_32_EEG("101")
+#custom_raw2=load_32_EEG("101")
 
 'This is to make MNE array of filtered data through MNE filt function.'
 #filt=custom_raw.filter(100, 300, fir_design='firwin')
@@ -80,9 +80,9 @@ stim=create_epochs(stimulations, prm.get_sampling_rate()) #Creates stim time arr
 #picks =[14, 15]
 
 'Dictionary for color of traces'
-#colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
-#     emg='g', ref_meg='steelblue', misc='k', stim='b',
-#     resp='k', chpi='k')
+colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
+     emg='g', ref_meg='steelblue', misc='k', stim='b',
+     resp='k', chpi='k')
 
 
 
@@ -91,7 +91,7 @@ stim=create_epochs(stimulations, prm.get_sampling_rate()) #Creates stim time arr
 #evoked.plot([0], time_unit='s') #to plot these epochs, first array is channel number.
 
 'Still need to get correct channels and maybe a bit more threshold'
-epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes. 
+#epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=True, scalings= 'auto') #block episodes. 
 
 ##evoked.plot_topomap(times=np.linspace(0, 0.5, 2), ch_type='mag', time_unit='s')
 
@@ -117,7 +117,7 @@ epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=
 'To do a basic plot below. The following can be added for specifc order of channels order=[4, 5, 3, 0, 1, 14, 15, 16]'
 
 
-#custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], show_options = "true" )#
+custom_raw3.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], show_options = "true" )#
 
 
 #
@@ -126,7 +126,7 @@ epochs.plot(n_epochs=1, picks=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], block=
 #                                    23,24,25,26,27,28,29,30,31,32], show_options = "true" )#
 
 
-
+#custom_raw3=mne.concatenate_raws([custom_raw, custom_raw2])
 'The following is to calculate coherence'
 
 #coh_average, coh_std, f= global_coherence(analysis_times, channel_combo, custom_raw)
