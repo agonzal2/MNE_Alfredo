@@ -38,9 +38,15 @@ prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\S7001
 #prm.set_filename('E17.txt')
 #prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\DATA\\')
 <<<<<<< HEAD
+<<<<<<< HEAD
 #prm.set_excelpath('/media/jorge/Data/Jorge/DATA/')
 prm.set_excelname('300_abs_thresh.xls') 
 prm.set_channel_combo_name('Short_connections.xls') 
+=======
+prm.set_excelpath('/media/jorge/Data/Jorge/DATA/')
+prm.set_excelname('300_abs_thresh.xls')
+prm.set_channel_combo_name('Short_connections.xls')
+>>>>>>> 3d365490cddc8d313f1fa17174995ffc0c14f9a8
 =======
 prm.set_excelpath('/media/jorge/Data/Jorge/DATA/')
 prm.set_excelname('300_abs_thresh.xls')
