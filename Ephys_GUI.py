@@ -8,11 +8,12 @@ email: agonzal2@staffmail.ed.ac.uk
 This makes the objects for MNE.
 """
 
+import sys
+from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog
+from PyQt5.QtWidgets import QWidget, QPushButton, QErrorMessage
+from PyQt5.QtCore import pyqtSlot
 
-
-
-
-
+from mainWindow import *
 
 import glob
 import os
@@ -35,24 +36,145 @@ global w
 
 
 
-def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Tethered Recordings\\191019\\2019-10-19_10-59-44\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
-    prm.set_filename('E17.txt')
-    prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\')
-    prm.set_excelname('S7013_D1_NREM.xls')
-    prm.set_sampling_rate(1000)
-    prm.set_starttime(1036) #using as experiment
-    prm.set_endtime(1046)   
-    prm.set_starttime2(994) #using as control.
-    prm.set_endtime2(1004)
-    prm.set_windowtype('hann')
-    prm.set_stimfreq(10)
-    prm.set_headstages(4)
-    prm.set_stimduration(30)
-    
+
+prm.set_filepath('C:\\Users\\sulse\\Desktop\\Tethered Recordings\\191019\\2019-10-19_10-59-44\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
+#prm.set_filename('E17.txt')
+#prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\')
+prm.set_excelname('S7013_D1_NREM.xls')
+prm.set_channel_combo_name('Short_connections.xls') 
+prm.set_sampling_rate(1000)
+prm.set_starttime(1036) #using as experiment
+prm.set_endtime(1046)   
+prm.set_starttime2(994) #using as control.
+prm.set_endtime2(1004)
+prm.set_windowtype('hamming')
+prm.set_stimfreq(10)
+prm.set_headstages(4)
+prm.set_stimduration(30)
+
+'Dictionary for color of traces'
+colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m', emg='g', ref_meg='steelblue', misc='k', stim='b', resp='k', chpi='k')
+
+class MyForm(QDialog):
+     def __init__(self):
+          super().__init__()
+          self.ui = Ui_Dialog()
+          self.ui.setupUi(self)
+          self.ui.ButtonSelectRawDataFolder.clicked.connect(self.getRawDataFolder)
+          self.ui.ButtonLoadData.clicked.connect(self.loadData)
+          self.ui.ButtonPlotRawData.clicked.connect(self.plotRawData)
+          self.ui.ButtonFilterRawData.clicked.connect(self.filterRawData)
+          self.ui.ButtonSelectSpreadSheet.clicked.connect(self.openSpreadSheet)
+          self.ui.ButtonSpreadsheetTimes.clicked.connect(self.getSpecificTimes)
+          self.ui.ButtonCalculateEpochs.clicked.connect(self.getEpochs)
+          self.ui.ButtonPlotEpochs.clicked.connect(self.plotEpochs)
+          # Error message (it is necessary to initialize it too)
+          self.error_msg = QErrorMessage()
+          self.error_msg.setWindowTitle("Error")
+          self.show()
+
+     
+     def getRawDataFolder(self):
+          foldername = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+          if foldername:
+               AlfredoEEG.getRawDataFolder(foldername)
+     
+     '(1) Function below loads the data and makes the MNE data object '
+     def loadData(self):
+          if AlfredoEEG.rawDataFolder:
+               AlfredoEEG.load_raw_data()
+          else: 
+               self.error_msg.showMessage("It is necessary to select an folder")
+     
+     def LoadingDataProgress(self, progress):
+          self.progressRawDataLoading.setValue(progress)
+
+     def plotRawData(self):
+          AlfredoEEG.plotRawData()          
+
+     def filterRawData(self):
+          AlfredoEEG.filterRawData()          
+     
+     def openSpreadSheet(self):
+          options = QFileDialog.Options()
+          filename, _ = QFileDialog.getOpenFileName(self,"Select Spreadsheet", "", "Excel files (*.xls)", options=options)
+          if filename:
+               AlfredoEEG.loadSpecificTimesFile(filename)
+     
+     def getSpecificTimes(self):
+          if AlfredoEEG.filename:
+               AlfredoEEG.getSpecificTimes()
+          else:
+               self.error_msg.showMessage("It is necessary to select an .xls File")
+
+     def getEpochs(self):
+          AlfredoEEG.getEpochs()
+
+     def plotEpochs(self):
+          AlfredoEEG.plotEpochs()
+
+class eeg16 ():
+     custom_raw = []
+     specificTimes = []
+     stimatedTimes = []
+     epochs = []
+     evoked = []     
+
+     def __init__(self, custom_raw=[], specificTimes=[], stimatedTimes=[], epochs=[], evoked=[]):
+          self.custom_raw=custom_raw
+          self.specificTimes=specificTimes
+          self.stimatedTimes=stimatedTimes
+          self.filename = ""
+          self.rawDataFolder = ""
+     
+     def getRawDataFolder(self, folder):
+          self.rawDataFolder = folder
+     
+     def load_raw_data(self):
+          self.custom_raw=load_16_channel_opto_mne(4)(self.rawDataFolder)
+     
+     def plotRawData(self):
+          self.custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,
+                                           14,15,16,32,17,18,19,20,21,22,
+                                           23,24,25,26,27,28,29,30,31,32], show_options = "true" )
+
+     def loadSpecificTimesFile(self, filename):
+          self.filename = filename
+
+     # (3) If you have specific times to analyse, load excel spreadsheet of them below.
+     def getSpecificTimes(self):
+          self.specificTimes=import_spreadsheet(self.filename) #Imports spreadsheet
+          self.stimatedTimes=create_epochs(self.specificTimes, prm.get_sampling_rate()) #Creates stim time array that MNE can read.
+     
+     def getRawData(self):
+          return self.custom_raw
+     
+     def getEpochs(self):
+          self.epochs=mne.Epochs(self.custom_raw, self.stimatedTimes, baseline= None, detrend=None, tmin=-2, tmax=3)
+
+     def plotEpochs(self):
+          # picks =[14, 15]
+          '(5) Functions for evoked plots '
+          self.evoked = self.epochs.average().pick_types(eeg=True, emg=True) #to average epochs.
+          self.evoked.plot([0], time_unit='s') #to plot these epochs, first array is channel number.  
+     
+     def filterRawData(self):
+          filt.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,
+                                    14,15,16,32,17,18,19,20,21,22,
+                                    23,24,25,26,27,28,29,30,31,32], show_options = "true" )#
+
+     
+AlfredoEEG = eeg16()
+
+if __name__=="__main__":
+     app = QApplication(sys.argv)
+     w = MyForm()
+     w.show
+     
+     sys.exit(app.exec())    
 
 'Initialize the parameters'
-init_params()
+#init_params()
 
 
 'This loads 4 headstages in numpy, calculates stimulations, plots entrainment, saves an excel of it'
