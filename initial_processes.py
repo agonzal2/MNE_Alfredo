@@ -95,7 +95,9 @@ def load_32channel_individually():
 
     return data
 
-def load_16channel_opto(headstage_number):
+def load_16channel_opto():
+    
+    headstage_number=4
 
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
     data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
