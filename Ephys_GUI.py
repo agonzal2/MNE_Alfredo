@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QDialog, QApplication, QFileDialog
 from PyQt5.QtWidgets import QWidget, QPushButton, QErrorMessage
 from PyQt5.QtCore import pyqtSlot
 
-from mainWindow import *
+from mainGUIwindow import *
 
 import glob
 import os
@@ -64,11 +64,11 @@ class MyForm(QDialog):
           self.ui.ButtonSelectRawDataFolder.clicked.connect(self.getRawDataFolder)
           self.ui.ButtonLoadData.clicked.connect(self.loadData)
           self.ui.ButtonPlotRawData.clicked.connect(self.plotRawData)
-          self.ui.ButtonFilterRawData.clicked.connect(self.filterRawData)
-          self.ui.ButtonSelectSpreadSheet.clicked.connect(self.openSpreadSheet)
-#          self.ui.ButtonSpreadsheetTimes.clicked.connect(self.getSpecificTimes)
-#          self.ui.ButtonCalculateEpochs.clicked.connect(self.getEpochs)
-          self.ui.ButtonPlotEpochs.clicked.connect(self.plotEpochs)
+#          self.ui.ButtonFilterRawData.clicked.connect(self.filterRawData)
+#          self.ui.ButtonSelectSpreadSheet.clicked.connect(self.openSpreadSheet)
+##          self.ui.ButtonSpreadsheetTimes.clicked.connect(self.getSpecificTimes)
+##          self.ui.ButtonCalculateEpochs.clicked.connect(self.getEpochs)
+#          self.ui.ButtonPlotEpochs.clicked.connect(self.plotEpochs)
 #           Error message (it is necessary to initialize it too)
           self.error_msg = QErrorMessage()
           self.error_msg.setWindowTitle("Error")
@@ -86,6 +86,7 @@ class MyForm(QDialog):
                AlfredoEEG.load_raw_data()
           else: 
                self.error_msg.showMessage("It is necessary to select an folder")
+      
      
      def LoadingDataProgress(self, progress):
           self.progressRawDataLoading.setValue(progress)
@@ -164,7 +165,7 @@ class eeg16 ():
                                     14,15,16,32,17,18,19,20,21,22,
                                     23,24,25,26,27,28,29,30,31,32], show_options = "true" )#
 
-     
+#     
 AlfredoEEG = eeg16()
 
 if __name__=="__main__":
