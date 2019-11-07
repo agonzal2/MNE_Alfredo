@@ -56,6 +56,7 @@ prm.set_stimduration(30)
 colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m', emg='g', ref_meg='steelblue', misc='k', stim='b', resp='k', chpi='k')
 
 class MyForm(QDialog):
+    
      def __init__(self):
           super().__init__()
           self.ui = Ui_Dialog()
@@ -65,10 +66,10 @@ class MyForm(QDialog):
           self.ui.ButtonPlotRawData.clicked.connect(self.plotRawData)
           self.ui.ButtonFilterRawData.clicked.connect(self.filterRawData)
           self.ui.ButtonSelectSpreadSheet.clicked.connect(self.openSpreadSheet)
-          self.ui.ButtonSpreadsheetTimes.clicked.connect(self.getSpecificTimes)
-          self.ui.ButtonCalculateEpochs.clicked.connect(self.getEpochs)
+#          self.ui.ButtonSpreadsheetTimes.clicked.connect(self.getSpecificTimes)
+#          self.ui.ButtonCalculateEpochs.clicked.connect(self.getEpochs)
           self.ui.ButtonPlotEpochs.clicked.connect(self.plotEpochs)
-          # Error message (it is necessary to initialize it too)
+#           Error message (it is necessary to initialize it too)
           self.error_msg = QErrorMessage()
           self.error_msg.setWindowTitle("Error")
           self.show()

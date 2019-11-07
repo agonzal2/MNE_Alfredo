@@ -1,22 +1,19 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Wed Nov  6 11:56:25 2019
-
-@author: agonzal2
-"""
 
 # Form implementation generated from reading ui file 'mainWindow.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.13.0
 #
 # WARNING! All changes made in this file will be lost!
 
+
 from PyQt5 import QtCore, QtGui, QtWidgets
+
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         Dialog.setObjectName("Dialog")
-        Dialog.resize(493, 674)
+        Dialog.resize(797, 772)
         self.label = QtWidgets.QLabel(Dialog)
         self.label.setGeometry(QtCore.QRect(60, 180, 321, 16))
         self.label.setObjectName("label")
@@ -62,17 +59,20 @@ class Ui_Dialog(object):
         self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
-        self.ButtonLoadData = QtWidgets.QPushButton(self.frame_2)
-        self.ButtonLoadData.setGeometry(QtCore.QRect(30, 40, 101, 23))
-        self.ButtonLoadData.setObjectName("ButtonLoadData")
+        self.ButtonPlotRawData = QtWidgets.QPushButton(self.frame_2)
+        self.ButtonPlotRawData.setEnabled(False)
+        self.ButtonPlotRawData.setGeometry(QtCore.QRect(180, 20, 131, 23))
         self.ButtonPlotRawData.setObjectName("ButtonPlotRawData")
         self.ButtonLoadData = QtWidgets.QPushButton(self.frame_2)
-        self.ButtonLoadData.setGeometry(QtCore.QRect(30, 40, 101, 23))
+        self.ButtonLoadData.setGeometry(QtCore.QRect(20, 60, 101, 23))
         self.ButtonLoadData.setObjectName("ButtonLoadData")
         self.ButtonFilterRawData = QtWidgets.QPushButton(self.frame_2)
         self.ButtonFilterRawData.setEnabled(False)
         self.ButtonFilterRawData.setGeometry(QtCore.QRect(180, 60, 131, 23))
         self.ButtonFilterRawData.setObjectName("ButtonFilterRawData")
+        self.ButtonSelectRawDataFolder = QtWidgets.QPushButton(self.frame_2)
+        self.ButtonSelectRawDataFolder.setGeometry(QtCore.QRect(20, 20, 93, 28))
+        self.ButtonSelectRawDataFolder.setObjectName("ButtonSelectRawDataFolder")
         self.label_2 = QtWidgets.QLabel(Dialog)
         self.label_2.setGeometry(QtCore.QRect(60, 30, 101, 16))
         self.label_2.setObjectName("label_2")
@@ -238,6 +238,9 @@ class Ui_Dialog(object):
         self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
+        self.ButtonSelectSpreadSheet = QtWidgets.QPushButton(Dialog)
+        self.ButtonSelectSpreadSheet.setGeometry(QtCore.QRect(530, 180, 93, 28))
+        self.ButtonSelectSpreadSheet.setObjectName("ButtonSelectSpreadSheet")
         self.frame.raise_()
         self.framePlottingEvoked.raise_()
         self.frame_2.raise_()
@@ -248,8 +251,11 @@ class Ui_Dialog(object):
         self.Button2PDF.raise_()
         self.Button2PNG.raise_()
         self.label_16.raise_()
+        self.ButtonSelectSpreadSheet.raise_()
 
         self.retranslateUi(Dialog)
+        self.ButtonSelectRawDataFolder.clicked.connect(self.ButtonSelectRawDataFolder.click)
+        self.ButtonSelectSpreadSheet.clicked.connect(self.ButtonSelectSpreadSheet.click)
         QtCore.QMetaObject.connectSlotsByName(Dialog)
 
     def retranslateUi(self, Dialog):
@@ -264,6 +270,7 @@ class Ui_Dialog(object):
         self.ButtonPlotRawData.setText(_translate("Dialog", "Plot Raw Data"))
         self.ButtonLoadData.setText(_translate("Dialog", "Load Raw Data"))
         self.ButtonFilterRawData.setText(_translate("Dialog", "Filter Raw Data"))
+        self.ButtonSelectRawDataFolder.setText(_translate("Dialog", "Pick Folder"))
         self.label_2.setText(_translate("Dialog", "Raw Data"))
         self.ButtonPlotSingleTopomap.setText(_translate("Dialog", "Plot Single Topomap"))
         self.ButtonPlotTopomapBetweenEvoked.setText(_translate("Dialog", "Plot Topomap between Evoked"))
@@ -284,3 +291,4 @@ class Ui_Dialog(object):
         self.Button2PDF.setText(_translate("Dialog", "PDF"))
         self.Button2PNG.setText(_translate("Dialog", "PNG"))
         self.label_16.setText(_translate("Dialog", "Export Figures"))
+        self.ButtonSelectSpreadSheet.setText(_translate("Dialog", "Spreadsheet"))
