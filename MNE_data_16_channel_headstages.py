@@ -36,7 +36,7 @@ global w
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Tethered Recordings\\191019\\2019-10-19_10-59-44\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
+    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Tethered Recordings\\190627\\2019-06-27_13-22-41\\')#E:\\ERUK\\Tethered Recordings\\ERUK Animals\\180917\\2018-09-17_11-11-58\\
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\CDKL5_October_2018\\S7013\\')
     prm.set_excelname('S7013_D1_NREM.xls')
@@ -70,6 +70,7 @@ init_params()
 
 'Functions below load the data and make the MNE data object, specify how many headstages'
 #Below loads 16 channel arrays.
+print(prm.get_filepath())
 custom_raw=load_16_channel_opto_mne(4)
 
 #Below loads 32-channel array.
@@ -173,7 +174,7 @@ colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
      emg='g', ref_meg='steelblue', misc='k', stim='b',
      resp='k', chpi='k')
 
-custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46, 47, 48, 49,50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,64], show_options = "true" )#
+#custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46, 47, 48, 49,50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63,64], show_options = "true" )#
 'This is to plot coherence below'
 #multiple_coherence(analysis_times, custom_raw)
 

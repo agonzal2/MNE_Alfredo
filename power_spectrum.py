@@ -12,7 +12,6 @@ import scipy.fftpack
 from scipy import signal
 import parameters
 from scipy.signal import coherence
-from initial_processes import *
 import xlsxwriter
 import pandas as pd
 prm = parameters.Parameters()

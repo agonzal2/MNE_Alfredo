@@ -24,15 +24,15 @@ def load_file(file):  #Opens text files.
 
 "The function below loads 16 channel headstage recordings individually, specify which one of a potential 4 to load"
 
-def load_16channel_opto_individually(headstage_number):
+def load_16channel_opto_individually(folder):
     
     
     if headstage_number == 1:
         channels=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16]
         
         'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
-        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        data=loadFolderToArray(folder, channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(folder, channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
         
         'Add Opto Stim Channel to Data'
         
@@ -43,8 +43,8 @@ def load_16channel_opto_individually(headstage_number):
         channels=[17,18,19,20,21,22, 23,24,25,26,27,28,29,30,31,32]
         
         'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
-        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        data=loadFolderToArray(folder, channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(folder, channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
         
         'Add Opto Stim Channel to Data'
         
@@ -55,7 +55,7 @@ def load_16channel_opto_individually(headstage_number):
         channels=[33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48]
         
         'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data=loadFolderToArray(folder, channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
         data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
         
         'Add Opto Stim Channel to Data'
@@ -67,8 +67,8 @@ def load_16channel_opto_individually(headstage_number):
         channels=[49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64]
         
         'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-        data=loadFolderToArray(prm.get_filepath(), channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
-        data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+        data=loadFolderToArray(folder, channels, chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+        data_adc=loadFolderToArray(folder, channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
         
         'Add Opto Stim Channel to Data'
         
@@ -95,12 +95,12 @@ def load_32channel_individually():
 
     return data
 
-def load_16channel_opto(headstage_number):
+def load_16channel_opto(folder, headstage_number):
 
 
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
-    data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
-    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+    data=loadFolderToArray(folder, channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
+    data_adc=loadFolderToArray(folder, channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
 
     if headstage_number == 4:
     
@@ -142,27 +142,27 @@ def load_16channel_opto(headstage_number):
     
 "The function below loads the data in mne format, specify number of headstages"
     
-def load_16_channel_opto_mne(headstage_number):
+def load_16_channel_opto_mne(path):
+    headstage_number=4
     
-    print(prm.get_filepath())
     'Below are 2 functions from OpenEphys to load data channels and auxilary (accelerometer) channels'
     data=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'CH', dtype = float, session = '0', source = '100')#######load file
-    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######load file8
+#    data_adc=loadFolderToArray(prm.get_filepath(), channels = 'all', chprefix = 'ADC', dtype = float, session = '0', source = '100')#######
 
     if headstage_number == 4:
     
         'Add Opto Stim Channel to Data'
     
-        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
-        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
+#        data= np.append(data, (np.zeros((data.shape[0],1), dtype=int64)), axis=1)
+#        data[:,64]=(data_adc[:,0]*300) #Multiply by 300 to have about the same scale for optogenetics.
         
         datatp=data.transpose()#Array from openephys has to be transposed to match RawArray MNE function to create.
         del data
-        del data_adc
+#        del data_adc
         
         'Below I make the channel names and channel types, this should go in the parameteres file later.'
         
-        n_channels=65
+        n_channels=64
         
         channel_names=['hpc_m_i_a', 'hpc_m_i_b', 'somato_a', 'somato_b', 'BLANK', 
                        'hpc_r_c_a', 'hpc_r_c_b', 'hpc_m_c_a', 'hpc_m_c_b', 'hpc_c_c_a', 
@@ -176,12 +176,12 @@ def load_16_channel_opto_mne(headstage_number):
                        'hpc_m_i_a_4', 'hpc_m_i_b_4', 'somato_a_4', 'somato_b_4', 'BLANK_4', 
                        'hpc_r_c_a_4', 'hpc_r_c_b_4', 'hpc_m_c_a_4', 'hpc_m_c_b_4', 'hpc_c_c_a_4', 
                        'hpc_c_c_b_4', 'EMG_4', 'cb_a_4', 'cb_b_4', 'hpc_c_i_a_4', 'hpc_c_i_b_4',
-                       'Opto']
+                       ]#'Opto'
         channel_types=['eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
                        'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
                        'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
                        'eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','eeg','emg','eeg','eeg','eeg','eeg','eeg',
-                       'stim']
+                       ]#'stim'
     
     
     

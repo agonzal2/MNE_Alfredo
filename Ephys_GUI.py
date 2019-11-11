@@ -20,7 +20,7 @@ import os
 
 import mne
 from OpenEphys import *
-from initial_processes import *
+from initial_processes_GUI import *
 from numpy import transpose
 from matplotlib import pyplot as plt
 from mne.time_frequency import (tfr_multitaper, tfr_stockwell, tfr_morlet,
@@ -51,7 +51,7 @@ prm.set_windowtype('hamming')
 prm.set_stimfreq(10)
 prm.set_headstages(4)
 prm.set_stimduration(30)
-
+headstage_number=4
 'Dictionary for color of traces'
 colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m', emg='g', ref_meg='steelblue', misc='k', stim='b', resp='k', chpi='k')
 
@@ -77,6 +77,7 @@ class MyForm(QDialog):
      
      def getRawDataFolder(self):
           foldername = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
+          prm.set_filepath(foldername)
           if foldername:
                AlfredoEEG.getRawDataFolder(foldername)
      
@@ -133,12 +134,14 @@ class eeg16 ():
           self.rawDataFolder = folder
      
      def load_raw_data(self):
-          self.custom_raw=load_16_channel_opto_mne(self.rawDataFolder)
+          self.custom_raw=load_16_channel_opto_mne(4)
      
      def plotRawData(self):
           self.custom_raw.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1,2,3,4,5,6,7,8,9,10,11,12,13,
-                                           14,15,16,32,17,18,19,20,21,22,
-                                           23,24,25,26,27,28,29,30,31,32], show_options = "true" )
+                                           14,15,16,17,18,19,20,21,22,
+                                           23,24,25,26,27,28,29,30,31,32,
+                                           33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48,
+                                           49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63], show_options = "true" )
 
      def loadSpecificTimesFile(self, filename):
           self.filename = filename
