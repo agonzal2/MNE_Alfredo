@@ -23,7 +23,7 @@ prm = parameters.Parameters()
 
 
 def init_params(): #Defines initial parameters used throughout.
-    prm.set_filepath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\Test\\S7027_D2-A\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
+    prm.set_filepath('C:\\Users\\Alfredo\\Desktop\\S7001_D3_2018-06-27_09-58-00\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\'
     prm.set_filename('E17.txt')
     prm.set_excelpath('C:\\Users\\sulse\\Desktop\\Ingrid\\DATA\\OPEN EPHIS DATA\\')#C:\\Users\\sulse\\Desktop\\B_D3_2018-10-16_10-32-56\\')
     prm.set_excelname('S7001_D2_Seizures_0.5less.xls') 
@@ -58,11 +58,11 @@ init_params()
 #channel_combo=import_channel_combo(prm.get_excelpath() + prm.get_channel_combo_name())
 
 'Functin below loads the data in numpy format'
-#data=load_32channel_individually()
+data=load_32channel_individually()
 
 
 'Function below loads the data and makes the MNE data object'
-#custom_raw2=load_32_EEG("101")
+#custom_raw2=load_32_EEG("100")
 
 'This is to make MNE array of filtered data through MNE filt function.'
 #filt=custom_raw.filter(100, 300, fir_design='firwin')
@@ -117,7 +117,7 @@ colors=dict(mag='darkblue', grad='b', eeg='k', eog='k', ecg='m',
 'To do a basic plot below. The following can be added for specifc order of channels order=[4, 5, 3, 0, 1, 14, 15, 16]'
 
 
-custom_raw3.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6, 9, 12, 15, 18, 21, 24, 27, 30, 32], show_options = "true" )#
+#custom_raw2.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32], show_options = "true" )#
 
 
 #
@@ -141,18 +141,18 @@ custom_raw3.plot(None, 5, 20, 8,color = colors, scalings = "auto", order=[0,3,6,
 
 'This is to make figures with Matplotlib and not MNE'
 
-#plot_all(data[:,0], prm.get_sampling_rate(), 'k')
-#plot_all(data[:,3]-500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,6]-1000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,9]-1500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,12]-2000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,15]-2500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,18]-3000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,21]-3500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,24]-4000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,27]-4500, prm.get_sampling_rate(),'k')
-#plot_all(data[:,30]-5000, prm.get_sampling_rate(),'k')
-#plot_all(data[:,32]*10-7000, prm.get_sampling_rate(),'b')
+plot_all(data[:,0], prm.get_sampling_rate(), 'k')
+plot_all(data[:,3]-500, prm.get_sampling_rate(),'k')
+plot_all(data[:,6]-1000, prm.get_sampling_rate(),'k')
+plot_all(data[:,9]-1500, prm.get_sampling_rate(),'k')
+plot_all(data[:,12]-2000, prm.get_sampling_rate(),'k')
+plot_all(data[:,15]-2500, prm.get_sampling_rate(),'k')
+plot_all(data[:,18]-3000, prm.get_sampling_rate(),'k')
+plot_all(data[:,21]-3500, prm.get_sampling_rate(),'k')
+plot_all(data[:,24]-4000, prm.get_sampling_rate(),'k')
+plot_all(data[:,27]-4500, prm.get_sampling_rate(),'k')
+plot_all(data[:,30]-5000, prm.get_sampling_rate(),'k')
+plot_all(data[:,32]*10-7000, prm.get_sampling_rate(),'b')
 
 
 'Plotting Time frequency representation with DPSS Tapers.'

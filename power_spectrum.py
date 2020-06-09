@@ -14,6 +14,7 @@ import parameters
 from scipy.signal import coherence
 import xlsxwriter
 import pandas as pd
+from initial_processes import *
 prm = parameters.Parameters()
 
 
@@ -46,11 +47,11 @@ def psd_2chan (sub_data1, sub_data2, windowtype, samplingrate, stimfreq) :  # Ca
 
     window=scipy.signal.get_window(windowtype, samplingrate)
     f, Pxx_den = signal.periodogram(sub_data1, samplingrate, window, samplingrate)
-    psd=plt.semilogy(f, sqrt(Pxx_den), 'b')
+    psd=plt.semilogy(f, sqrt(Pxx_den), 'k')
 
     window=scipy.signal.get_window(windowtype, samplingrate)
     f, Pxx_den = signal.periodogram(sub_data2, samplingrate, window, samplingrate)
-    psd=plt.semilogy(f, sqrt(Pxx_den), 'k')
+    psd=plt.semilogy(f, sqrt(Pxx_den), 'b')
     plt.axvline(x=stimfreq)
     
     
@@ -58,10 +59,10 @@ def psd_2chan (sub_data1, sub_data2, windowtype, samplingrate, stimfreq) :  # Ca
     
     plt.xlim([0, 25])
     x=[0, 25]
-    plt.xticks(arange(min(x), max(x), 1.0), size=10)
+#    plt.xticks(arange(min(x), max(x), 1.0), size=10)
     ##plt.ticklabel_format(x, fontsize=1000)
     ##plt.font_manager.FontProerties()
-    plt.ylim([1, 1e2])
+    plt.ylim([1e-1, 1e2])
     plt.yticks(size=10)
     #plt.legend(handles=[psd1, psd2], loc=0)
     #for label in ax.get_xticklabels():
@@ -70,8 +71,8 @@ def psd_2chan (sub_data1, sub_data2, windowtype, samplingrate, stimfreq) :  # Ca
     plt.ylabel('PSD [V**2/Hz]', fontsize=5)
     plt.show()
     
-    plt.savefig(str(prm.get_excelpath()) + str(prm.get_excelname()) + str(prm.get_starttime())+ 'and'+ str(prm.get_starttime2())+'.png')
-    plt.close()
+#    plt.savefig(str(prm.get_excelpath()) + str(prm.get_excelname()) + str(prm.get_starttime())+ 'and'+ str(prm.get_starttime2())+'.png')
+#    plt.close()
     return
 #Unable to merge"
 def psd_entrainment_data (sub_data, windowtype, samplingrate, stimfreq) :  # Calculates PSD, plots it, saves it
@@ -145,7 +146,7 @@ def coherence_values(sub_data1, sub_data2, samplingrate):  ##Get data points of 
 
 'Large function to calculate individual coherence for individual time windows and channel combinations in multi-channel recording'
 def global_coherence(analysis_times, channel_combo, custom_raw):  ##Do individual coherence for series of channels.
-    #Analysis times is times to compare, see brain state function and channel combo function.
+    #analysis_times is times to compare, see brain state function and channel combo function.
     
     cc_num_rows, cc_num_cols=channel_combo.shape  #Here getting size of channel combination array.
     at_num_rows, at_num_cols=analysis_times.shape  #Get size of analysis times array.
@@ -494,3 +495,69 @@ def multiple_theta_delta(analysis_times, data): #Plots PSDs at multiple times wh
     
      
     return thetadeltaresults
+
+
+def ispc_trials_return_exponential_1j_over_time(hil_data_baseline, hil_data_stim, channel_combo):
+    
+    phase_angles_baseline=angle(hil_data_baseline) #gets phase angles from complex data
+    phase_angles_stim=angle(hil_data_stim)
+    "Next step is to get the phase angle difference"
+#    phase_diff_32_64 = phase_angles[:,5]-phase_angles[:,2]
+    
+    "Do this for all combinations of channels dictated by channel_combo"
+    num_rows, num_cols=channel_combo.shape
+    
+#    ipsc_avg_across_time= zeros([num_rows])
+    
+    length_epoch_baseline=int(len(phase_angles_baseline[0][0]))  # This is the length of the epoch.
+    length_epoch_stim=int(len(phase_angles_stim[0][0]))  # This is the length of the epoch.
+    
+
+    ext_times_1j_alltrodes_baseline = zeros(shape=(len(phase_angles_baseline), num_rows, length_epoch_baseline))
+    ext_times_1j_alltrodes_stim = zeros(shape=(len(phase_angles_stim), num_rows, length_epoch_stim))
+    #This above makes array to hold all subtracted data from all epochs and channels.
+    
+    "First calculate baseline values below"
+    for t in range(0, len(phase_angles_baseline)): #For loop to run through all epochs.
+        
+        
+        for channels in range(0, num_rows):  #For loop to run through all channel combinations.
+                chan_1=(channel_combo.item(channels,0))
+                channel_1=int(chan_1) 
+                chan_2=(channel_combo.item(channels,1))
+                channel_2=int(chan_2)
+                
+                #Below is an MNE function to get index from data object.
+                phase_diff_indiv = phase_angles_baseline[t,channel_1]-phase_angles_baseline[t,channel_2]
+                 #    multiply_1j=1j*phase_diff_32_64 #multiply by the imaginary operator
+                exp_times_1j=exp(1j*phase_diff_indiv) #make exponential
+
+                
+                ext_times_1j_alltrodes_baseline[t][channels]=exp_times_1j
+                
+    #Then calculate stim values           
+    for t in range(0, len(phase_angles_baseline)): #For loop to run through all epochs.
+        
+    
+        for channels in range(0, num_rows):  #For loop to run through all channel combinations.
+            chan_1=(channel_combo.item(channels,0))
+            channel_1=int(chan_1) 
+            chan_2=(channel_combo.item(channels,1))
+            channel_2=int(chan_2)
+            
+            #Below is an MNE function to get index from data object.
+            phase_diff_indiv = phase_angles_stim[t,channel_1]-phase_angles_stim[t,channel_2]
+             #    multiply_1j=1j*phase_diff_32_64 #multiply by the imaginary operator
+            exp_times_1j=exp(1j*phase_diff_indiv) #make exponential
+            
+            
+            ext_times_1j_alltrodes_stim[t][channels]=exp_times_1j
+                    
+        
+                
+
+    return ext_times_1j_alltrodes_baseline, ext_times_1j_alltrodes_stim
+
+
+
+
