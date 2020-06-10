@@ -145,7 +145,7 @@ stim_epochs=mne.Epochs(custom_raw, stim, baseline= None,
        detrend=None, tmin=0, tmax=30)
 
 
-
+#picks below should be ipsi-inter, ipsi-caud, contra-ros, contra-inter, contra-caud, opto
 hil_data_baseline=baseline_epochs.get_data(picks=[32, 46, 38, 40, 42, 64]) #Produces numpy array from picks.
 hil_data_stim=stim_epochs.get_data(picks=[32, 46, 38, 40, 42, 64])
 
@@ -169,16 +169,6 @@ all_epochs_stim=concatenate((ext_times_1j_alltrodes_stim_1st, ext_times_1j_alltr
 
 'Then write function to average at individual time points and across entire epoch'
 
-def calculate_ispc_trials(all_epochs_baseline, all_epochs_stim):
-    avg_epochs_baseline=all_epochs_baseline.mean(0)
-    abs_avg_baseline=abs(avg_epochs_baseline)
-    ipsc_metric_baseline=abs_avg_baseline.mean(1)
-    
-    avg_epochs_stim=all_epochs_stim.mean(0)
-    abs_avg_stim=abs(avg_epochs_stim)
-    ipsc_metric_stim=abs_avg_stim.mean(1)
-    
-    return abs_avg_baseline, ipsc_metric_baseline, abs_avg_stim, ipsc_metric_stim
 
 abs_avg_baseline, ipsc_metric_baseline, abs_avg_stim, ipsc_metric_stim = calculate_ispc_trials(all_epochs_baseline, all_epochs_stim)
 

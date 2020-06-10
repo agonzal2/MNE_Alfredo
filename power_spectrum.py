@@ -559,5 +559,15 @@ def ispc_trials_return_exponential_1j_over_time(hil_data_baseline, hil_data_stim
     return ext_times_1j_alltrodes_baseline, ext_times_1j_alltrodes_stim
 
 
+def calculate_ispc_trials(all_epochs_baseline, all_epochs_stim):
+    avg_epochs_baseline=all_epochs_baseline.mean(0)
+    abs_avg_baseline=abs(avg_epochs_baseline)
+    ipsc_metric_baseline=abs_avg_baseline.mean(1)
+    
+    avg_epochs_stim=all_epochs_stim.mean(0)
+    abs_avg_stim=abs(avg_epochs_stim)
+    ipsc_metric_stim=abs_avg_stim.mean(1)
+    
+    return abs_avg_baseline, ipsc_metric_baseline, abs_avg_stim, ipsc_metric_stim
 
 
